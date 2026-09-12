@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-// The allowlist: only Google accounts whose email matches an active member
-// here (and is on the vitstudent.ac.in domain) are let past the login gate.
+// The allowlist: only Google accounts whose verified email matches an active
+// member here are let past the login gate. This is the sole access check.
 const memberSchema = new mongoose.Schema(
   {
     name: { type: String, required: true, trim: true },

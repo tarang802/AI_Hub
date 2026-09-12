@@ -67,13 +67,12 @@ export default function Login() {
             </div>
           </div>
 
-          <p className="login-copy">Members-only. Sign in with your VIT student Google account.</p>
+          <p className="login-copy">Members-only. Sign in with your Google account.</p>
 
           {denied && (
             <p className="login-error" role="alert">
-              That account can't get in — either it's not a <code>@vitstudent.ac.in</code>{" "}
-              address, or it's not on the current MIC AI/ML member list yet. If you're a member
-              and think this is wrong, ask a lead to add your VIT email to the list.
+              That account isn't on the current MIC AI/ML member list. If you're a member and
+              think this is wrong, ask a lead to add the email you signed in with to the list.
             </p>
           )}
 
@@ -87,7 +86,7 @@ export default function Login() {
             Sign in with Google
           </a>
           <p className="login-subtext">
-            Requires <code>@vitstudent.ac.in</code> and a spot on the current member list.
+            Access is limited to emails on the current MIC AI/ML member list.
           </p>
         </div>
 

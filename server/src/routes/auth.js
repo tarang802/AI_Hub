@@ -3,15 +3,11 @@ const passport = require("passport");
 
 const router = express.Router();
 const CLIENT_URL = process.env.CLIENT_URL;
-const ALLOWED_DOMAIN = process.env.ALLOWED_HOSTED_DOMAIN || "vitstudent.ac.in";
 
 router.get(
   "/google",
   passport.authenticate("google", {
     scope: ["profile", "email"],
-    // Hints Google's account chooser to the VIT domain. Cosmetic only —
-    // the real enforcement is the domain + allowlist check in passport.js.
-    hd: ALLOWED_DOMAIN,
     prompt: "select_account",
   })
 );
