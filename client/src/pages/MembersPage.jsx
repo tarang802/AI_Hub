@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Navigate } from "react-router-dom";
 import Header from "../components/Header";
+import TopNav from "../components/TopNav";
 import AdminNav from "../components/AdminNav";
 import { useAuth } from "../context/AuthContext";
 import { fetchMembers, addMember, bulkAddMembers, updateMember } from "../api";
@@ -60,6 +61,7 @@ export default function MembersPage() {
     return (
       <>
         <Header />
+        <TopNav />
         <div className="editor-wrap">
           <h1>Admins only</h1>
           <p className="md-status">This page is for MIC leads.</p>
@@ -126,6 +128,7 @@ export default function MembersPage() {
   return (
     <>
       <Header />
+      <TopNav />
       <div className="editor-wrap">
         <h1>Members</h1>
         <AdminNav />

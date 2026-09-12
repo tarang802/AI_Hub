@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import Markdown from "../components/Markdown";
 import Header from "../components/Header";
 import { fetchPage, savePage } from "../api";
-import { renderBody } from "../lib/content";
+import { useNav } from "../context/NavContext";
 
 export default function EditPage() {
   const { "*": slug } = useParams();
@@ -15,6 +14,35 @@ export default function EditPage() {
   const [summary, setSummary] = useState("");
   const [preview, setPreview] = useState(false);
   const [status, setStatus] = useState({ loading: true, error: null, submitting: false });
+  const { nav } = useNav();
+  const textareaRef = useRef(null);
+
+  // Flattens the nav so every page can be offered as a link target.
+  const linkTargets = nav.flatMap((s) => [
+    { title: s.title, path: s.path },
+    ...(s.children || []).map((c) => ({ title: `${s.title} → ${c.title}`, path: c.path })),
+  ]);
+
+  // Inserts a Markdown link at the cursor. Absolute paths are used rather
+  // than relative ../ ones so the link keeps working if the page is later
+  // moved to a different section.
+  function insertLink(path, title) {
+    const el = textareaRef.current;
+    const snippet = `[${title}](/${path})`;
+    if (!el) {
+      setBody((b) => b + snippet);
+      return;
+    }
+    const start = el.selectionStart;
+    const end = el.selectionEnd;
+    const selected = body.slice(start, end);
+    const text = selected ? `[${selected}](/${path})` : snippet;
+    setBody(body.slice(0, start) + text + body.slice(end));
+    requestAnimationFrame(() => {
+      el.focus();
+      el.setSelectionRange(start + text.length, start + text.length);
+    });
+  }
 
   useEffect(() => {
     fetchPage(slug)
@@ -67,7 +95,9 @@ export default function EditPage() {
         <p className="editor-note">
           Your changes go live as soon as you save. Every save is recorded, so a lead can
           restore an earlier version if something goes wrong. Write in Markdown — headings with{" "}
-          <code>##</code>, links as <code>[text](url)</code>.
+          <code>##</code>, links as <code>[text](url)</code>. To link another hub page, use
+          “Link to a page” — or write the path yourself, like{" "}
+          <code>[CNNs](/deep-learning/cnn)</code>.
         </p>
 
         {status.error && (
@@ -84,16 +114,35 @@ export default function EditPage() {
             <button type="button" className={preview ? "active" : ""} onClick={() => setPreview(true)}>
               Preview
             </button>
+
+            {!preview && (
+              <select
+                className="editor-linkpicker"
+                value=""
+                onChange={(e) => {
+                  const t = linkTargets.find((x) => x.path === e.target.value);
+                  if (t) insertLink(t.path, t.title.split(" → ").pop());
+                  e.target.value = "";
+                }}
+                aria-label="Insert a link to another page"
+              >
+                <option value="">🔗 Link to a page…</option>
+                {linkTargets.map((t) => (
+                  <option key={t.path} value={t.path}>
+                    {t.title}
+                  </option>
+                ))}
+              </select>
+            )}
           </div>
 
           {preview ? (
             <div className="editor-preview md-content">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {renderBody(body, page?.linkBase)}
-              </ReactMarkdown>
+              <Markdown body={body} linkBase={page?.linkBase} />
             </div>
           ) : (
             <textarea
+              ref={textareaRef}
               className="editor-textarea"
               value={body}
               onChange={(e) => setBody(e.target.value)}

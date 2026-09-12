@@ -16,6 +16,10 @@ router.use(ensureMember);
 
 router.get("/page", async (req, res, next) => {
   try {
+    // Without this a missing ?slug queries for undefined and reports "not
+    // found", which sends the caller looking for a page that was never asked for.
+    if (!req.query.slug) return res.status(400).json({ error: "A slug is required." });
+
     const page = await Page.findOne({ slug: req.query.slug });
     if (!page) return res.status(404).json({ error: "Page not found." });
     res.json({

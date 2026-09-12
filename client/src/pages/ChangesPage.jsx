@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import Header from "../components/Header";
+import TopNav from "../components/TopNav";
 import { useAuth } from "../context/AuthContext";
 import { fetchChanges, fetchDiff, revertRevision } from "../api";
 import DiffView from "../components/DiffView";
@@ -73,6 +74,7 @@ export default function ChangesPage({ mine = false }) {
   return (
     <>
       <Header />
+      <TopNav />
       <div className="editor-wrap">
         <h1>{mine ? "Your edits" : "Recent changes"}</h1>
         {!mine && isAdmin && <AdminNav />}

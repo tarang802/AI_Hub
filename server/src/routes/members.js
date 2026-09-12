@@ -4,10 +4,11 @@ const { ensureAdmin } = require("../middleware/ensureMember");
 
 const router = express.Router();
 
-// Member management is admin-only, all of it.
+// Member management is admin-only. This router is mounted at /api/members,
+// so the bare router.use() below cannot leak onto unrelated /api routes.
 router.use(ensureAdmin);
 
-router.get("/members", async (req, res, next) => {
+router.get("/", async (req, res, next) => {
   try {
     const members = await Member.find()
       .sort({ name: 1 })
@@ -19,7 +20,7 @@ router.get("/members", async (req, res, next) => {
   }
 });
 
-router.post("/members", async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
     const name = (req.body.name || "").trim();
     const email = (req.body.email || "").trim().toLowerCase();
@@ -40,7 +41,7 @@ router.post("/members", async (req, res, next) => {
 // Paste-in bulk add, so onboarding a whole recruitment intake doesn't mean
 // typing 250 rows one at a time. Accepts "Name,email" per line, with or
 // without a header row.
-router.post("/members/bulk", async (req, res, next) => {
+router.post("/bulk", async (req, res, next) => {
   try {
     const text = typeof req.body.text === "string" ? req.body.text : "";
     const lines = text.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
@@ -82,7 +83,7 @@ router.post("/members/bulk", async (req, res, next) => {
   }
 });
 
-router.patch("/members/:id", async (req, res, next) => {
+router.patch("/:id", async (req, res, next) => {
   try {
     const member = await Member.findById(req.params.id);
     if (!member) return res.status(404).json({ error: "Member not found." });

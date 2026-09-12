@@ -12,6 +12,7 @@ const passport = require("./config/passport");
 const authRoutes = require("./routes/auth");
 const pageRoutes = require("./routes/pages");
 const memberRoutes = require("./routes/members");
+const structureRoutes = require("./routes/structure");
 const { ensureMember } = require("./middleware/ensureMember");
 
 const PORT = process.env.PORT || 4000;
@@ -54,7 +55,15 @@ async function main() {
   });
 
   app.use("/api", pageRoutes);
-  app.use("/api", memberRoutes);
+  app.use("/api/members", memberRoutes);
+  app.use("/api", structureRoutes);
+
+  // An unmatched /api/* must not fall through to the SPA fallback below —
+  // fetch() would then parse index.html as JSON and fail with a syntax error
+  // that says nothing about the real problem (a wrong path).
+  app.use("/api", (_req, res) => {
+    res.status(404).json({ error: "Unknown API route." });
+  });
 
   // In production the built React app is served from this same origin, so the
   // session cookie is first-party on every request. (Split domains would need
@@ -67,6 +76,22 @@ async function main() {
       res.sendFile(path.join(clientDist, "index.html"));
     });
   }
+
+  // Routes hand errors here via next(err). Without this Express replies with
+  // an HTML stack trace, which leaks internals and breaks any client that
+  // expects JSON.
+  // eslint-disable-next-line no-unused-vars
+  app.use((err, req, res, _next) => {
+    // A malformed :id is the caller's mistake, not a server failure.
+    if (err.name === "CastError") {
+      return res.status(400).json({ error: "Malformed id." });
+    }
+    if (err.name === "ValidationError") {
+      return res.status(400).json({ error: err.message });
+    }
+    console.error(`${req.method} ${req.originalUrl} failed:`, err);
+    res.status(500).json({ error: "Something went wrong." });
+  });
 
   app.listen(PORT, () => {
     console.log(`AI Hub auth server listening on http://localhost:${PORT}`);

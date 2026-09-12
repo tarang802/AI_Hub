@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
+import { NavProvider } from "./context/NavContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -7,11 +8,13 @@ import ContentPage from "./pages/ContentPage";
 import EditPage from "./pages/EditPage";
 import ChangesPage from "./pages/ChangesPage";
 import MembersPage from "./pages/MembersPage";
+import PagesAdmin from "./pages/PagesAdmin";
 
 export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
+        <NavProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route
@@ -27,6 +30,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <ChangesPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/pages"
+            element={
+              <ProtectedRoute>
+                <PagesAdmin />
               </ProtectedRoute>
             }
           />
@@ -63,6 +74,7 @@ export default function App() {
             }
           />
         </Routes>
+        </NavProvider>
       </AuthProvider>
     </BrowserRouter>
   );

@@ -1,20 +1,18 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import rehypeSlug from "rehype-slug";
+import Markdown from "../components/Markdown";
 import Header from "../components/Header";
 import TopNav from "../components/TopNav";
 import SectionSidebar from "../components/SectionSidebar";
 import RoadmapTree from "../components/RoadmapTree";
-import { findByPath } from "../content/nav";
-import { renderBody } from "../lib/content";
+import { useNav, findInNav } from "../context/NavContext";
 import { fetchPage } from "../api";
 
 export default function ContentPage() {
   const location = useLocation();
   const slug = location.pathname.replace(/^\/+|\/+$/g, "");
-  const match = findByPath(slug);
+  const { nav } = useNav();
+  const match = findInNav(nav, slug);
 
   const [page, setPage] = useState(null);
   const [error, setError] = useState(null);
@@ -77,9 +75,7 @@ export default function ContentPage() {
                   written version below it stays editable like any other page. */}
               {slug === "roadmap" && <RoadmapTree />}
 
-              <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSlug]}>
-                {renderBody(page.body, page.linkBase)}
-              </ReactMarkdown>
+              <Markdown body={page.body} linkBase={page.linkBase} />
             </>
           )}
         </article>

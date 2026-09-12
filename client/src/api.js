@@ -81,3 +81,37 @@ export function bulkAddMembers(text) {
 export function updateMember(id, changes) {
   return request(`/api/members/${id}`, { method: "PATCH", body: JSON.stringify(changes) });
 }
+
+// --- Structure: nav, roadmap, page management ----------------------------
+
+export async function fetchNav() {
+  const data = await request("/api/nav");
+  return data.nav;
+}
+
+export async function fetchRoadmap() {
+  const data = await request("/api/roadmap");
+  return data.stages;
+}
+
+export async function fetchAllPages() {
+  const data = await request("/api/pages");
+  return data.pages;
+}
+
+export async function fetchStages() {
+  const data = await request("/api/roadmap/stages");
+  return data.stages;
+}
+
+export function createPage(fields) {
+  return request("/api/pages", { method: "POST", body: JSON.stringify(fields) });
+}
+
+export function updatePageMeta(id, changes) {
+  return request(`/api/pages/${id}`, { method: "PATCH", body: JSON.stringify(changes) });
+}
+
+export function deletePage(id, force = false) {
+  return request(`/api/pages/${id}${force ? "?force=1" : ""}`, { method: "DELETE" });
+}

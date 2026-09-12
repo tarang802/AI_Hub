@@ -15,6 +15,21 @@ const pageSchema = new mongoose.Schema(
     // against "foundations", while "roadmap" (roadmap.md) resolves against "".
     linkBase: { type: String, default: "" },
     updatedBy: { type: String, default: null },
+
+    // --- Navigation ---
+    // The nav tree is derived from these rather than stored separately, so a
+    // page and its nav entry can never drift apart. Top-level pages have an
+    // empty section; a child's section is its parent's slug.
+    section: { type: String, default: "" },
+    order: { type: Number, default: 0 },
+    hidden: { type: Boolean, default: false },
+
+    // --- Roadmap placement (opt-in) ---
+    // Empty stage means the page simply isn't part of the learning path —
+    // Contributing and Careers shouldn't appear on the roadmap.
+    roadmapStage: { type: String, default: "" },
+    roadmapOrder: { type: Number, default: 0 },
+    roadmapDesc: { type: String, default: "" },
   },
   { timestamps: true }
 );

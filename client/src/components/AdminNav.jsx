@@ -6,6 +6,9 @@ export default function AdminNav() {
       <NavLink to="/admin" end className={({ isActive }) => (isActive ? "active" : "")}>
         Recent changes
       </NavLink>
+      <NavLink to="/admin/pages" className={({ isActive }) => (isActive ? "active" : "")}>
+        Pages
+      </NavLink>
       <NavLink to="/admin/members" className={({ isActive }) => (isActive ? "active" : "")}>
         Members
       </NavLink>

@@ -15,9 +15,14 @@ export default function Header() {
         {user && (
           <div className="hub-header-user">
             {user.role === "admin" && (
-              <Link className="hub-header-link" to="/admin">
-                Changes
-              </Link>
+              <>
+                <Link className="hub-header-link" to="/admin/pages">
+                  Pages
+                </Link>
+                <Link className="hub-header-link" to="/admin">
+                  Changes
+                </Link>
+              </>
             )}
             <Link className="hub-header-link" to="/my-edits">
               My edits

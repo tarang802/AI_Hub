@@ -1,5 +1,6 @@
-// Titles + ordering for the top nav and each section's sidebar. Paths match
-// the roadmap's node hrefs and the content files' locations under src/content/.
+// Seed data only: scripts/seedStructure.js reads this to populate the initial
+// navigation in MongoDB. The live nav is served from /api/nav — editing this
+// file does not change the running site.
 export const nav = [
   { title: "Roadmap", path: "roadmap" },
   {
@@ -52,15 +53,3 @@ export const nav = [
   { title: "Careers & Internships", path: "careers" },
   { title: "Contributing", path: "contribution" },
 ];
-
-// Flat lookup for "find the page and its section" (breadcrumbs, sidebar highlighting).
-export function findByPath(path) {
-  const clean = path.replace(/^\/+|\/+$/g, "");
-  for (const section of nav) {
-    if (section.path === clean) return { section, page: section };
-    for (const child of section.children || []) {
-      if (child.path === clean) return { section, page: child };
-    }
-  }
-  return null;
-}

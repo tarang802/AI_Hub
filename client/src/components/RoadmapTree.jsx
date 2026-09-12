@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import roadmapData from "../assets/roadmap.json";
+import { fetchRoadmap } from "../api";
 
 // Shares the homepage roadmap's storage key on purpose — ticking a topic in
 // either view is the same act, so progress follows the member around.
@@ -32,17 +32,24 @@ function countDone(nodes, progress) {
 
 export default function RoadmapTree() {
   const [progress, setProgress] = useState(loadProgress);
+  const [stages, setStages] = useState(null);
+
+  useEffect(() => {
+    fetchRoadmap()
+      .then(setStages)
+      .catch(() => setStages([]));
+  }, []);
   const [collapsed, setCollapsed] = useState({});
 
   const { totalNodes, totalDone } = useMemo(() => {
     let totalNodes = 0;
     let totalDone = 0;
-    roadmapData.stages.forEach((stage) => {
+    (stages || []).forEach((stage) => {
       totalNodes += stage.nodes.length;
       totalDone += countDone(stage.nodes, progress);
     });
     return { totalNodes, totalDone };
-  }, [progress]);
+  }, [progress, stages]);
 
   const overallPct = totalNodes ? Math.round((totalDone / totalNodes) * 100) : 0;
 
@@ -59,6 +66,11 @@ export default function RoadmapTree() {
     saveProgress({});
   };
 
+  if (!stages) return <p className="md-status">Loading roadmap…</p>;
+  if (stages.length === 0) {
+    return <p className="md-status">No roadmap stages yet.</p>;
+  }
+
   return (
     <div className="roadmap-app">
       <div className="roadmap-summary">
@@ -73,7 +85,7 @@ export default function RoadmapTree() {
       {/* A single spine runs top to bottom; stage markers sit on it and topic
           cards branch alternately left and right, roadmap.sh style. */}
       <div className="tree">
-        {roadmapData.stages.map((stage) => {
+        {stages.map((stage) => {
           const done = countDone(stage.nodes, progress);
           const pct = stage.nodes.length ? Math.round((done / stage.nodes.length) * 100) : 0;
           const isCollapsed = !!collapsed[stage.id];

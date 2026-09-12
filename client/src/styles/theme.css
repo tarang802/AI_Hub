@@ -786,14 +786,19 @@ a:hover {
   z-index: 9;
 }
 
-.hub-topnav-inner {
+.hub-topnav-wrap {
+  position: relative;
   max-width: 72rem;
   margin: 0 auto;
-  padding: 0 1.25rem;
+}
+
+.hub-topnav-inner {
   display: flex;
   gap: 1.25rem;
+  padding: 0 1.25rem;
   overflow-x: auto;
   scrollbar-width: none;
+  scroll-behavior: smooth;
 }
 
 .hub-topnav-inner::-webkit-scrollbar {
@@ -1925,4 +1930,244 @@ a:hover {
 .member-actions button:disabled {
   opacity: 0.35;
   cursor: not-allowed;
+}
+
+
+.page-move {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.page-move-label {
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--fg-lighter);
+  margin-right: 0.1rem;
+}
+
+/* --------------------------------------------------------------------------
+   Admin: page management
+   -------------------------------------------------------------------------- */
+.page-create { margin-bottom: 1.25rem; }
+
+.page-create-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.page-create input,
+.page-create select,
+.prow-actions select {
+  padding: 0.5rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.82rem;
+}
+
+.page-create input { flex: 1 1 16rem; min-width: 0; }
+.page-create select { flex: 0 1 13rem; }
+
+.page-create input:focus,
+.page-create select:focus { outline: none; border-color: var(--mic-orange); }
+
+/* A section (nav) or a stage (roadmap) and everything inside it. */
+.pgroup {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: 0.85rem;
+  overflow: hidden;
+}
+
+.pgroup-head { background: var(--surface-raised); }
+
+.pgroup-stage {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  padding: 0.6rem 0.9rem;
+  background: var(--surface-raised);
+  border-bottom: 1px solid var(--border);
+  border-left: 3px solid var(--stage-color, var(--border));
+}
+
+.pgroup--beginner { --stage-color: #6fd684; }
+.pgroup--intermediate { --stage-color: #ffd54f; }
+.pgroup--advanced { --stage-color: #ff9d5c; }
+
+.pgroup-stage .tree-stage-badge { color: var(--stage-color, var(--fg-lighter)); }
+
+.pgroup-count {
+  margin-left: auto;
+  font-size: 0.72rem;
+  color: var(--fg-lighter);
+}
+
+.pgroup-body { background: var(--surface); }
+.pgroup-empty { padding: 0.7rem 0.9rem; margin: 0; }
+
+/* One page row. */
+.prow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  transition: background-color 0.4s ease;
+}
+
+.prow:last-child { border-bottom: none; }
+.prow--child { padding-left: 1.6rem; }
+
+/* Confirms an action visibly instead of the list silently reloading. */
+.prow--flash { background: rgba(242, 113, 28, 0.16); }
+
+.prow-pos {
+  flex: 0 0 1.5rem;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.72rem;
+  color: var(--fg-lighter);
+  text-align: right;
+}
+
+.prow-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.prow-title {
+  font-size: 0.86rem;
+  font-weight: 600;
+  text-decoration: none !important;
+}
+
+.prow-slug {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.68rem;
+  color: var(--fg-lighter);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.prow-tags { display: flex; gap: 0.35rem; flex: 0 0 auto; }
+
+.prow-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex: 0 0 auto;
+}
+
+.iconbtn {
+  min-width: 1.9rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--fg-light);
+  font: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.iconbtn:hover:not(:disabled) { border-color: var(--mic-orange); color: var(--mic-orange); }
+.iconbtn:disabled { opacity: 0.25; cursor: not-allowed; }
+.iconbtn--danger:hover:not(:disabled) { border-color: #ff6b6b; color: #ff6b6b; }
+
+@media (max-width: 40em) {
+  .prow { flex-wrap: wrap; }
+  .prow-main { flex: 1 1 100%; }
+}
+
+.editor-linkpicker {
+  margin-left: auto;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--fg-light);
+  font: inherit;
+  font-size: 0.78rem;
+  max-width: 16rem;
+  cursor: pointer;
+}
+
+.editor-linkpicker:hover { border-color: var(--mic-orange); color: var(--mic-orange); }
+.editor-linkpicker:focus { outline: none; border-color: var(--mic-orange); }
+
+/* Fade edges hint that the nav continues past the visible area. They're
+   pointer-events:none so they never block a tab underneath. */
+.hub-topnav-wrap::before,
+.hub-topnav-wrap::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  z-index: 1;
+}
+
+.hub-topnav-wrap::before {
+  left: 0;
+  background: linear-gradient(90deg, #08090b 30%, transparent);
+}
+
+.hub-topnav-wrap::after {
+  right: 0;
+  background: linear-gradient(270deg, #08090b 30%, transparent);
+}
+
+.hub-topnav.is-left .hub-topnav-wrap::before,
+.hub-topnav.is-right .hub-topnav-wrap::after {
+  opacity: 1;
+}
+
+.hub-topnav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  display: none;
+  width: 1.6rem;
+  height: 1.6rem;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface-raised);
+  color: var(--fg-light);
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.hub-topnav-arrow:hover {
+  border-color: var(--mic-orange);
+  color: var(--mic-orange);
+}
+
+.hub-topnav-arrow--left { left: 0.15rem; }
+.hub-topnav-arrow--right { right: 0.15rem; }
+
+/* Arrows only exist when there's actually something to scroll to. */
+.hub-topnav.is-left .hub-topnav-arrow--left,
+.hub-topnav.is-right .hub-topnav-arrow--right {
+  display: block;
+}
+
+/* Touch devices scroll by swiping, so the arrows are just clutter there. */
+@media (hover: none) {
+  .hub-topnav-arrow { display: none !important; }
 }

@@ -1,15 +1,7 @@
-// Loads every ported MkDocs page (client/src/content/**/*.md) at build time
-// and prepares it for react-markdown: strips the leading H1 (the page's own
-// nav title is rendered separately), rewrites relative *.md links into
-// in-app routes, and turns the handful of `!!! type "title"` admonitions
-// used in the source docs into plain blockquotes (real Markdown, so nested
-// links still parse — no raw-HTML pipeline needed for just one use).
-
-const files = import.meta.glob("../content/**/*.md", {
-  query: "?raw",
-  import: "default",
-  eager: true,
-});
+// Prepares stored markdown for react-markdown: rewrites relative *.md links
+// into in-app routes, and turns `!!! type "title"` admonitions into plain
+// blockquotes (real Markdown, so nested links still parse — no raw-HTML
+// pipeline needed for the handful of uses in the original docs).
 
 const ADMONITION_EMOJI = {
   tip: "💡",
@@ -102,20 +94,6 @@ function preprocessAdmonitions(md) {
 
 function stripLeadingH1(body) {
   return body.replace(/^\s*#\s+.+\n+/, "");
-}
-
-const registry = {};
-for (const [key, raw] of Object.entries(files)) {
-  const rawPath = fileKeyToRawPath(key);
-  const route = rawPathToRoute(rawPath);
-  registry[route] = stripLeadingH1(raw.replace(/\r\n/g, "\n"));
-}
-
-// The bundled markdown is now only a fallback for local work before the
-// database has been seeded — live content comes from the API.
-export function getBundledBody(route) {
-  const clean = route.replace(/^\/+|\/+$/g, "");
-  return registry[clean] ?? null;
 }
 
 // Turns stored markdown into what react-markdown should render. Applied at

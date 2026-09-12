@@ -1,6 +1,6 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import roadmapData from "../assets/roadmap.json";
+import { fetchRoadmap } from "../api";
 
 const STORAGE_KEY = "aihub-roadmap-progress";
 
@@ -32,16 +32,23 @@ function countDone(nodes, progress) {
 
 export default function Roadmap() {
   const [progress, setProgress] = useState(loadProgress);
+  const [stages, setStages] = useState(null);
+
+  useEffect(() => {
+    fetchRoadmap()
+      .then(setStages)
+      .catch(() => setStages([]));
+  }, []);
 
   const { totalNodes, totalDone } = useMemo(() => {
     let totalNodes = 0;
     let totalDone = 0;
-    roadmapData.stages.forEach((stage) => {
+    (stages || []).forEach((stage) => {
       totalNodes += stage.nodes.length;
       totalDone += countDone(stage.nodes, progress);
     });
     return { totalNodes, totalDone };
-  }, [progress]);
+  }, [progress, stages]);
 
   const toggleNode = (id, checked) => {
     const next = { ...progress, [id]: checked };
@@ -53,6 +60,11 @@ export default function Roadmap() {
     setProgress({});
     saveProgress({});
   };
+
+  if (!stages) return <p className="md-status">Loading roadmap…</p>;
+  if (stages.length === 0) {
+    return <p className="md-status">No roadmap stages yet.</p>;
+  }
 
   return (
     <div className="roadmap-app">
@@ -66,7 +78,7 @@ export default function Roadmap() {
       </div>
 
       <div className="roadmap-flow">
-        {roadmapData.stages.map((stage, i) => {
+        {stages.map((stage, i) => {
           const done = countDone(stage.nodes, progress);
           const pct = stage.nodes.length ? Math.round((done / stage.nodes.length) * 100) : 0;
 
@@ -121,7 +133,7 @@ export default function Roadmap() {
                 </div>
               </div>
 
-              {i < roadmapData.stages.length - 1 && <div className="roadmap-arrow">→</div>}
+              {i < stages.length - 1 && <div className="roadmap-arrow">→</div>}
             </div>
           );
         })}
