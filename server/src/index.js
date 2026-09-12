@@ -1,0 +1,60 @@
+require("dotenv").config();
+
+const express = require("express");
+const cors = require("cors");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+
+const { connectDb } = require("./config/db");
+const passport = require("./config/passport");
+const authRoutes = require("./routes/auth");
+const { ensureMember } = require("./middleware/ensureMember");
+
+const PORT = process.env.PORT || 4000;
+const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
+
+async function main() {
+  await connectDb();
+
+  const app = express();
+  app.set("trust proxy", 1);
+
+  app.use(cors({ origin: CLIENT_URL, credentials: true }));
+  app.use(express.json());
+
+  app.use(
+    session({
+      secret: process.env.SESSION_SECRET,
+      resave: false,
+      saveUninitialized: false,
+      store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
+      cookie: {
+        maxAge: 1000 * 60 * 60 * 24 * 14, // 14 days
+        httpOnly: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production",
+      },
+    })
+  );
+
+  app.use(passport.initialize());
+  app.use(passport.session());
+
+  app.use("/auth", authRoutes);
+
+  app.get("/api/health", (_req, res) => res.json({ ok: true }));
+
+  // Example of a member-only API route — add real ones here as the app grows.
+  app.get("/api/me/profile", ensureMember, (req, res) => {
+    res.json({ member: req.user });
+  });
+
+  app.listen(PORT, () => {
+    console.log(`AI Hub auth server listening on http://localhost:${PORT}`);
+  });
+}
+
+main().catch((err) => {
+  console.error("Failed to start server:", err);
+  process.exit(1);
+});

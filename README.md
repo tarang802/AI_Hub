@@ -57,6 +57,10 @@ One-time repository setup for a new fork/copy:
 2. In **Settings → Pages**, set **Source** to **GitHub Actions**.
 3. Push to `main` — the site builds and deploys automatically.
 
+### Members-only wiki (in progress)
+
+A separate, login-gated, Wikipedia-style editable wiki for MIC members is being set up on [Wiki.js](https://js.wiki/) — it needs a real server, so it isn't part of the GitHub Pages deploy above. See [`wiki/README.md`](wiki/README.md) for the deployment plan and current status.
+
 ## Contributing
 
 This hub is built by and for MIC members — pull requests adding resources, fixing errors, or writing new topic pages are welcome. See [`docs/contribution.md`](docs/contribution.md) for the full guide, including page templates and style conventions. In short:

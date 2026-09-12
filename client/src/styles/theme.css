@@ -1,0 +1,637 @@
+/* ==========================================================================
+   AI/ML Resource Hub — "MIC Black" theme
+   Same design language as the public docs/stylesheets/extra.css, ported for
+   the React member app (login gate + homepage + roadmap).
+   ========================================================================== */
+
+:root {
+  --mic-orange: #f2711c;
+  --mic-yellow: #f4c430;
+  --mic-green: #2e8b3d;
+  --mic-blue: #1c5fa8;
+
+  --bg: #08090b;
+  --surface: #0d0f13;
+  --surface-raised: #14171d;
+  --fg: #eef0f3;
+  --fg-light: #a7adb8;
+  --fg-lighter: #6b7280;
+  --border: rgba(255, 255, 255, 0.08);
+
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-full: 9999px;
+  --transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --brand-gradient: linear-gradient(90deg, var(--mic-orange), var(--mic-yellow), var(--mic-green), var(--mic-blue));
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: #5ea1e6;
+}
+
+a:hover {
+  color: var(--mic-orange);
+}
+
+.hub-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: var(--fg-light);
+}
+
+/* --------------------------------------------------------------------------
+   Header
+   -------------------------------------------------------------------------- */
+.hub-header {
+  background: #050608;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.hub-header-inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hub-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+}
+
+.hub-brand img {
+  width: 28px;
+  height: 28px;
+}
+
+.hub-header-user {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--fg-light);
+}
+
+.hub-header-signout {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.hub-header-signout:hover {
+  border-color: var(--mic-orange);
+  color: var(--mic-orange);
+}
+
+/* --------------------------------------------------------------------------
+   Login screen
+   -------------------------------------------------------------------------- */
+.login-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.login-card {
+  max-width: 30rem;
+  width: 100%;
+  text-align: center;
+  padding: clamp(2rem, 5vw, 3rem);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: radial-gradient(circle at 20% 15%, rgba(28, 95, 168, 0.3), transparent 55%),
+    radial-gradient(circle at 85% 25%, rgba(242, 113, 28, 0.2), transparent 55%), #050608;
+}
+
+.login-logo {
+  width: 72px;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 0 18px rgba(28, 95, 168, 0.5));
+}
+
+.login-card h1 {
+  margin: 0.4rem 0 0.75rem;
+  font-size: 1.75rem;
+  font-weight: 800;
+}
+
+.login-copy {
+  color: var(--fg-light);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.login-copy code {
+  color: var(--fg);
+}
+
+.login-error {
+  background: rgba(242, 113, 28, 0.1);
+  border: 1px solid rgba(242, 113, 28, 0.35);
+  color: #ff9d5c;
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.google-signin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: #ffffff;
+  color: #1f1f1f !important;
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 0.7rem 1.4rem;
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.google-signin-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+/* --------------------------------------------------------------------------
+   Hero
+   -------------------------------------------------------------------------- */
+.hub-hero {
+  position: relative;
+  text-align: center;
+  padding: clamp(2.5rem, 6vw, 4rem) clamp(1rem, 4vw, 2.5rem);
+  margin: 1.5rem auto;
+  max-width: 72rem;
+  border-radius: var(--radius-lg);
+  background: radial-gradient(circle at 15% 15%, rgba(28, 95, 168, 0.35), transparent 55%),
+    radial-gradient(circle at 85% 20%, rgba(242, 113, 28, 0.22), transparent 55%),
+    radial-gradient(circle at 50% 100%, rgba(46, 139, 61, 0.18), transparent 60%), #050608;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.hub-hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--brand-gradient);
+  background-size: 200% 100%;
+  animation: hub-gradient-shift 6s linear infinite;
+}
+
+@keyframes hub-gradient-shift {
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.hub-eyebrow {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--mic-orange);
+  margin-bottom: 0.75rem;
+}
+
+.hub-hero h1 {
+  margin: 0 0 0.65rem;
+  font-size: clamp(1.75rem, 5.5vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.hub-hero p {
+  max-width: 640px;
+  margin: 0 auto;
+  color: var(--fg-light);
+  line-height: 1.6;
+}
+
+.roadmap-credit {
+  margin: 0.35rem 0 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--mic-orange);
+}
+
+.hub-section {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1.25rem 3rem;
+}
+
+.hub-section h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0.4rem;
+}
+
+/* --------------------------------------------------------------------------
+   Level badges
+   -------------------------------------------------------------------------- */
+.hub-level-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 1.35rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0 0.6rem;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+}
+
+.hub-level-badge.beginner {
+  background: rgba(46, 139, 61, 0.14);
+  color: #6fd684;
+  border: 1px solid rgba(111, 214, 132, 0.35);
+}
+
+.hub-level-badge.intermediate {
+  background: rgba(244, 196, 48, 0.14);
+  color: #ffd54f;
+  border: 1px solid rgba(255, 213, 79, 0.35);
+}
+
+.hub-level-badge.advanced {
+  background: rgba(242, 113, 28, 0.14);
+  color: #ff9d5c;
+  border: 1px solid rgba(255, 157, 92, 0.35);
+}
+
+/* --------------------------------------------------------------------------
+   Roadmap
+   -------------------------------------------------------------------------- */
+.roadmap-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--fg-light);
+}
+
+.roadmap-reset {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.roadmap-reset:hover {
+  border-color: var(--mic-orange);
+  color: var(--mic-orange);
+}
+
+.roadmap-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+@media (min-width: 68em) {
+  .roadmap-flow {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .roadmap-stage {
+    flex: 1 1 0;
+  }
+}
+
+.roadmap-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--stage-color, var(--mic-blue));
+  border-radius: var(--radius-lg);
+  padding: clamp(1.1rem, 2.5vw, 1.5rem);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.03) 0%, transparent 40%), var(--surface);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal),
+    border-color var(--transition-normal);
+}
+
+.roadmap-stage:hover {
+  transform: translateY(-3px);
+  border-color: var(--stage-color, var(--mic-blue));
+  box-shadow: 0 16px 40px -12px var(--stage-glow, rgba(28, 95, 168, 0.35));
+}
+
+.roadmap-stage--beginner {
+  --stage-color: #6fd684;
+  --stage-glow: rgba(46, 139, 61, 0.28);
+  background: linear-gradient(180deg, rgba(46, 139, 61, 0.1) 0%, var(--surface) 45%);
+}
+
+.roadmap-stage--intermediate {
+  --stage-color: #ffd54f;
+  --stage-glow: rgba(244, 196, 48, 0.28);
+  background: linear-gradient(180deg, rgba(244, 196, 48, 0.09) 0%, var(--surface) 45%);
+}
+
+.roadmap-stage--advanced {
+  --stage-color: #ff9d5c;
+  --stage-glow: rgba(242, 113, 28, 0.28);
+  background: linear-gradient(180deg, rgba(242, 113, 28, 0.09) 0%, var(--surface) 45%);
+}
+
+.roadmap-stage-num {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  font-size: 3rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.04);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.roadmap-stage-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.roadmap-duration {
+  display: inline-flex;
+  align-items: center;
+  height: 1.35rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0 0.55rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--fg-light);
+}
+
+.roadmap-stage h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1.15rem;
+}
+
+.roadmap-goal {
+  color: var(--fg-light);
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 0 0 1rem;
+}
+
+.roadmap-progress {
+  position: relative;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+  margin: 0 0 0.3rem;
+}
+
+.roadmap-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--stage-color, var(--mic-blue)), var(--mic-orange));
+  border-radius: var(--radius-full);
+  transition: width var(--transition-normal);
+}
+
+.roadmap-progress-label {
+  display: block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--fg-light);
+  margin: 0 0 0.9rem;
+}
+
+.roadmap-nodes {
+  position: relative;
+  counter-reset: roadmap-node;
+}
+
+.roadmap-nodes::before {
+  content: "";
+  position: absolute;
+  top: 0.85rem;
+  bottom: 0.85rem;
+  left: 0.775rem;
+  width: 2px;
+  background: linear-gradient(180deg, var(--stage-color, var(--mic-blue)), transparent 90%);
+  opacity: 0.35;
+}
+
+.roadmap-node {
+  position: relative;
+  counter-increment: roadmap-node;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 0.75rem;
+  padding: 0.6rem 0;
+}
+
+.roadmap-node::before {
+  content: counter(roadmap-node);
+  position: relative;
+  z-index: 1;
+  grid-row: 1 / -1;
+  align-self: start;
+  margin-top: 0.05rem;
+  width: 1.65rem;
+  height: 1.65rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #0b0d10;
+  background: var(--stage-color, var(--mic-blue));
+  box-shadow: 0 0 0 4px var(--stage-glow, rgba(28, 95, 168, 0.2));
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+}
+
+.roadmap-node:hover::before {
+  transform: scale(1.12);
+  box-shadow: 0 0 0 6px var(--stage-glow, rgba(28, 95, 168, 0.3));
+}
+
+.roadmap-node-title {
+  font-weight: 600;
+  text-decoration: none !important;
+}
+
+.roadmap-node:hover .roadmap-node-title {
+  color: var(--stage-color, var(--mic-orange)) !important;
+}
+
+.roadmap-node-desc {
+  margin: 0.15rem 0 0;
+  font-size: 0.8rem;
+  color: var(--fg-light);
+}
+
+.roadmap-node.is-done::before {
+  content: "✓";
+  background: var(--stage-color, #2e8b3d);
+}
+
+.roadmap-node.is-done .roadmap-node-title {
+  color: var(--fg-light) !important;
+  text-decoration: line-through !important;
+}
+
+.roadmap-node-check {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0.4rem 0 0;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--fg-light);
+  cursor: pointer;
+  user-select: none;
+}
+
+.roadmap-node-check input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  flex: 0 0 auto;
+  transition: border-color var(--transition-fast), background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.roadmap-node-check input:hover {
+  border-color: var(--stage-color, var(--mic-orange));
+}
+
+.roadmap-node-check input:checked {
+  border-color: var(--stage-color, #2e8b3d);
+  background: var(--stage-color, #2e8b3d);
+  transform: scale(1.05);
+}
+
+.roadmap-checkmark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 15px;
+  height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 900;
+  color: #0b0d10;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+}
+
+.roadmap-node-check input:checked ~ .roadmap-checkmark {
+  opacity: 1;
+}
+
+.roadmap-arrow {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: var(--surface);
+  color: var(--mic-orange);
+  font-size: 1.15rem;
+  font-weight: 700;
+  box-shadow: 0 0 16px rgba(242, 113, 28, 0.25);
+  margin: 0 auto;
+}
+
+@media (min-width: 68em) {
+  .roadmap-arrow {
+    transform: rotate(0deg);
+  }
+}
+
+@media (max-width: 67.99em) {
+  .roadmap-arrow {
+    transform: rotate(90deg);
+  }
+}

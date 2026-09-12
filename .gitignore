@@ -8,3 +8,9 @@ venv/
 .DS_Store
 .idea/
 .vscode/
+
+# Wiki.js deployment secrets — never commit real credentials
+wiki/.env
+wiki/members.csv
+wiki/members-provisioned.csv
+
