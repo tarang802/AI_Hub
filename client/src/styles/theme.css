@@ -1039,3 +1039,883 @@ a:hover {
   max-width: 100%;
   border-radius: var(--radius-md);
 }
+
+/* --------------------------------------------------------------------------
+   Editing, review queue, and revision history
+   -------------------------------------------------------------------------- */
+.hub-header-link {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--fg-light);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.hub-header-link:hover {
+  color: var(--mic-orange);
+}
+
+.md-status {
+  color: var(--fg-lighter);
+  font-size: 0.88rem;
+}
+
+.md-content-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.md-content-head h1 {
+  margin-bottom: 1.25rem;
+}
+
+.md-edit-btn {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.3rem;
+  padding: 0.35rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--fg-light);
+  text-decoration: none !important;
+}
+
+.md-edit-btn:hover {
+  border-color: var(--mic-orange);
+  color: var(--mic-orange);
+}
+
+/* --- Editor ------------------------------------------------------------- */
+.editor-wrap {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 4rem;
+}
+
+.editor-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.editor-eyebrow {
+  margin: 0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-lighter);
+}
+
+.editor-wrap h1 {
+  margin: 0.25rem 0 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.editor-note {
+  color: var(--fg-light);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin: 0 0 1.5rem;
+}
+
+.editor-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.editor-tabs button {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--fg-light);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+
+.editor-tabs button.active {
+  border-color: var(--mic-orange);
+  color: var(--mic-orange);
+}
+
+.editor-textarea {
+  width: 100%;
+  min-height: 24rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--fg);
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.editor-textarea:focus {
+  outline: none;
+  border-color: var(--mic-orange);
+}
+
+.editor-preview {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  padding: 1.25rem;
+  min-height: 24rem;
+}
+
+.editor-summary {
+  display: block;
+  margin: 1.25rem 0;
+}
+
+.editor-summary span {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--fg-light);
+  margin-bottom: 0.4rem;
+}
+
+.editor-summary input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.editor-summary input:focus {
+  outline: none;
+  border-color: var(--mic-orange);
+}
+
+.editor-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.editor-btn {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--mic-orange);
+  background: var(--mic-orange);
+  color: #0b0d10 !important;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.55rem 1.1rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-decoration: none !important;
+}
+
+.editor-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.editor-cancel {
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--fg-light) !important;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-decoration: none !important;
+  white-space: nowrap;
+}
+
+.editor-cancel:hover {
+  border-color: var(--mic-orange);
+  color: var(--mic-orange) !important;
+}
+
+.editor-done {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.editor-done p {
+  color: var(--fg-light);
+  margin-bottom: 1.5rem;
+}
+
+/* --- Review queue ------------------------------------------------------- */
+.review-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  padding: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.review-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.review-slug {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.review-meta {
+  margin: 0.25rem 0 0;
+  font-size: 0.75rem;
+  color: var(--fg-lighter);
+}
+
+.review-summary {
+  margin: 0.75rem 0;
+  font-size: 0.88rem;
+  color: var(--fg-light);
+  font-style: italic;
+}
+
+.review-status {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border);
+  color: var(--fg-light);
+}
+
+.review-status--approved {
+  color: #6fd684;
+  border-color: rgba(111, 214, 132, 0.4);
+}
+
+.review-status--rejected {
+  color: #ff9d5c;
+  border-color: rgba(255, 157, 92, 0.4);
+}
+
+.review-history {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.review-history-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-lighter);
+  margin: 0 0 0.75rem;
+}
+
+.review-rev {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  font-size: 0.82rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.review-rev:last-child {
+  border-bottom: none;
+}
+
+/* --- Diff --------------------------------------------------------------- */
+.diff {
+  margin: 0.75rem 0 1rem;
+}
+
+.diff-stat {
+  margin: 0 0 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.diff-plus {
+  color: #6fd684;
+}
+
+.diff-minus {
+  color: #ff9d5c;
+}
+
+.diff-body {
+  margin: 0;
+  max-height: 22rem;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: #0b0d10;
+  padding: 0.6rem 0;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+
+.diff-line {
+  display: flex;
+  gap: 0.6rem;
+  padding: 0 0.8rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.diff-marker {
+  flex: 0 0 auto;
+  width: 0.8rem;
+  color: var(--fg-lighter);
+}
+
+.diff-add {
+  background: rgba(46, 139, 61, 0.16);
+  color: #b7e9c2;
+}
+
+.diff-del {
+  background: rgba(242, 113, 28, 0.14);
+  color: #ffc8a3;
+}
+
+.diff-gap {
+  color: var(--fg-lighter);
+  font-style: italic;
+  padding: 0.2rem 0.8rem;
+}
+
+.review-head-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  flex: 0 0 auto;
+}
+
+/* --------------------------------------------------------------------------
+   Roadmap tree — a central spine with topics branching off it
+   -------------------------------------------------------------------------- */
+.tree {
+  position: relative;
+  padding: 1rem 0 2rem;
+}
+
+/* The spine itself. Sits behind everything and runs the full height. */
+.tree::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  background: linear-gradient(
+    180deg,
+    transparent,
+    var(--border) 4%,
+    var(--border) 96%,
+    transparent
+  );
+}
+
+.tree-stage {
+  position: relative;
+  --stage-color: var(--mic-blue);
+}
+
+.tree-stage--beginner { --stage-color: #6fd684; }
+.tree-stage--intermediate { --stage-color: #ffd54f; }
+.tree-stage--advanced { --stage-color: #ff9d5c; }
+
+/* Stage marker: centred on the spine, like roadmap.sh's section headings. */
+.tree-stage-marker {
+  position: relative;
+  z-index: 1;
+  width: min(30rem, 100%);
+  margin: 0 auto;
+  padding: 1rem 1.25rem;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--stage-color);
+  border-radius: var(--radius-md);
+}
+
+.tree-stage-badge {
+  display: inline-block;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--stage-color);
+}
+
+.tree-stage-marker h3 {
+  margin: 0.4rem 0 0.35rem;
+  font-size: 1.15rem;
+}
+
+.tree-stage-goal {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--fg-light);
+}
+
+.tree-stage-meta {
+  margin: 0.5rem 0 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--fg-lighter);
+}
+
+.tree-branches {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tree-branch {
+  position: relative;
+  width: 50%;
+  padding: 1.1rem 2.25rem;
+  box-sizing: border-box;
+}
+
+.tree-branch--left {
+  margin-right: auto;
+  text-align: right;
+}
+
+.tree-branch--right {
+  margin-left: auto;
+  text-align: left;
+}
+
+/* The horizontal twig joining a card to the spine. */
+.tree-branch::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 1.75rem;
+  height: 2px;
+  background: var(--border);
+}
+
+.tree-branch--left::before { right: 0; }
+.tree-branch--right::before { left: 0; }
+
+/* The dot where the twig meets the spine. */
+.tree-branch::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  margin-top: -4.5px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 2px solid var(--stage-color);
+}
+
+.tree-branch--left::after { right: -5px; }
+.tree-branch--right::after { left: -5px; }
+
+.tree-branch.is-done::after {
+  background: var(--stage-color);
+}
+
+.tree-node {
+  display: inline-block;
+  max-width: 100%;
+  text-align: left;
+  padding: 0.8rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--stage-color);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast);
+}
+
+.tree-node:hover {
+  border-color: var(--stage-color);
+}
+
+.tree-node-title {
+  font-weight: 600;
+  font-size: 0.92rem;
+  text-decoration: none !important;
+}
+
+.tree-branch.is-done .tree-node-title {
+  color: var(--fg-light) !important;
+  text-decoration: line-through !important;
+}
+
+.tree-node-desc {
+  margin: 0.2rem 0 0;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--fg-light);
+}
+
+.tree-node-check {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.55rem;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: var(--fg-lighter);
+  cursor: pointer;
+  user-select: none;
+}
+
+.tree-node-check input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  flex: 0 0 auto;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.tree-node-check input:hover {
+  border-color: var(--stage-color);
+}
+
+.tree-node-check input:checked {
+  background: var(--stage-color);
+  border-color: var(--stage-color);
+}
+
+/* Generated content on <input> isn't reliable across browsers, so the tick is
+   a sibling span revealed on :checked. */
+.tree-checkmark {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  margin-top: -7px;
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 900;
+  color: #0b0d10;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.tree-node-check input:checked ~ .tree-checkmark {
+  opacity: 1;
+}
+
+.tree-branch.is-done .tree-node-check {
+  color: var(--stage-color);
+}
+
+/* Below this width the two-sided layout gets too cramped, so everything
+   stacks against a spine pushed to the left edge. */
+@media (max-width: 46em) {
+  .tree::before {
+    left: 0.5rem;
+    margin-left: 0;
+  }
+
+  .tree-stage-marker {
+    width: auto;
+    margin-left: 2rem;
+    text-align: left;
+  }
+
+  .tree-branch,
+  .tree-branch--left,
+  .tree-branch--right {
+    width: auto;
+    margin: 0 0 0 2rem;
+    padding: 0.85rem 0 0.85rem 1.25rem;
+    text-align: left;
+  }
+
+  .tree-branch--left::before,
+  .tree-branch--right::before {
+    left: -0.75rem;
+    right: auto;
+    width: 1rem;
+  }
+
+  .tree-branch--left::after,
+  .tree-branch--right::after {
+    left: -1.25rem;
+    right: auto;
+  }
+
+  .tree-node {
+    display: block;
+  }
+}
+
+/* The roadmap page needs more room than prose — the tree branches both ways. */
+.md-content--wide {
+  max-width: 58rem;
+}
+
+.tree-stage-toggle {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0 1.25rem;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  text-align: center;
+}
+
+.tree-stage-toggle h3 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.tree-stage-toggle:hover h3 {
+  color: var(--stage-color);
+}
+
+.tree-stage-chevron {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  font-size: 0.7rem;
+  color: var(--fg-lighter);
+}
+
+.tree-stage-marker h3 {
+  margin: 0.4rem 0 0.35rem;
+}
+
+.tree-stage-progress {
+  height: 4px;
+  margin: 0.75rem 0 0.4rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.tree-stage-progress-fill {
+  height: 100%;
+  background: var(--stage-color);
+  border-radius: var(--radius-full);
+  transition: width var(--transition-normal);
+}
+
+/* --------------------------------------------------------------------------
+   Admin: member management
+   -------------------------------------------------------------------------- */
+.admin-nav {
+  display: flex;
+  gap: 1.25rem;
+  margin: 0 0 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.admin-nav a {
+  padding: 0 0 0.6rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--fg-light);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+
+.admin-nav a:hover { color: var(--fg); }
+
+.admin-nav a.active {
+  color: var(--mic-orange);
+  border-bottom-color: var(--mic-orange);
+}
+
+.admin-notice {
+  border: 1px solid rgba(111, 214, 132, 0.35);
+  border-left: 2px solid #6fd684;
+  color: #b7e9c2;
+  padding: 0.7rem 1rem;
+  font-size: 0.85rem;
+  margin: 0 0 1.25rem;
+}
+
+.member-add {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1rem;
+}
+
+.member-add input {
+  flex: 1 1 12rem;
+  min-width: 0;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.member-add input:focus,
+.member-bulk textarea:focus,
+.member-search:focus {
+  outline: none;
+  border-color: var(--mic-orange);
+}
+
+.member-bulk {
+  margin-bottom: 1.25rem;
+}
+
+.member-bulk span {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--fg-light);
+  margin-bottom: 0.4rem;
+}
+
+.member-bulk textarea {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--fg);
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.78rem;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+.member-search {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.85rem;
+}
+
+.member-table {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.member-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.member-row:last-child { border-bottom: none; }
+
+.member-row.is-inactive { opacity: 0.5; }
+
+.member-identity {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.member-identity strong {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+  font-size: 0.88rem;
+}
+
+.member-email {
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-size: 0.72rem;
+  color: var(--fg-lighter);
+  word-break: break-all;
+}
+
+.member-badge {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.12rem 0.45rem;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(255, 157, 92, 0.4);
+  color: #ff9d5c;
+}
+
+.member-badge--off {
+  border-color: var(--border);
+  color: var(--fg-lighter);
+}
+
+.member-you {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--fg-lighter);
+}
+
+.member-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  flex: 0 0 auto;
+}
+
+.member-actions button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}

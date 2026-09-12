@@ -18,3 +18,66 @@ export function googleLoginUrl() {
 export async function logout() {
   await fetch(`${API_URL}/auth/logout`, { method: "POST", credentials: "include" });
 }
+
+async function request(path, options = {}) {
+  const res = await fetch(`${API_URL}${path}`, {
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    ...options,
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || `Request failed (${res.status})`);
+  return data;
+}
+
+// --- Pages ---------------------------------------------------------------
+
+export async function fetchPage(slug) {
+  const data = await request(`/api/page?slug=${encodeURIComponent(slug)}`);
+  return data.page;
+}
+
+export function savePage(slug, body, summary) {
+  return request("/api/edits", {
+    method: "POST",
+    body: JSON.stringify({ slug, body, summary }),
+  });
+}
+
+export async function fetchRevisions(slug) {
+  const data = await request(`/api/revisions?slug=${encodeURIComponent(slug)}`);
+  return data.revisions;
+}
+
+// Recent changes across the whole hub; `mine` limits it to the current member.
+export async function fetchChanges(mine = false) {
+  const data = await request(`/api/changes${mine ? "?mine=1" : ""}`);
+  return data.revisions;
+}
+
+export async function fetchDiff(revisionId) {
+  return request(`/api/revisions/${revisionId}/diff`);
+}
+
+export function revertRevision(id) {
+  return request(`/api/revisions/${id}/revert`, { method: "POST" });
+}
+
+// --- Members (admin) -----------------------------------------------------
+
+export async function fetchMembers() {
+  const data = await request("/api/members");
+  return data.members;
+}
+
+export function addMember(name, email) {
+  return request("/api/members", { method: "POST", body: JSON.stringify({ name, email }) });
+}
+
+export function bulkAddMembers(text) {
+  return request("/api/members/bulk", { method: "POST", body: JSON.stringify({ text }) });
+}
+
+export function updateMember(id, changes) {
+  return request(`/api/members/${id}`, { method: "PATCH", body: JSON.stringify(changes) });
+}

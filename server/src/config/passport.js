@@ -24,7 +24,7 @@ passport.use(
           return done(null, false, { message: "This email isn't on the MIC member list." });
         }
 
-        return done(null, { email: member.collegeEmail, name: member.name });
+        return done(null, { email: member.collegeEmail, name: member.name, role: member.role });
       } catch (err) {
         return done(err);
       }
@@ -41,7 +41,7 @@ passport.deserializeUser(async (email, done) => {
   try {
     const member = await Member.findOne({ collegeEmail: email, active: true });
     if (!member) return done(null, false);
-    return done(null, { email: member.collegeEmail, name: member.name });
+    return done(null, { email: member.collegeEmail, name: member.name, role: member.role });
   } catch (err) {
     done(err);
   }

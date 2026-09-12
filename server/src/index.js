@@ -10,6 +10,8 @@ const MongoStore = require("connect-mongo");
 const { connectDb } = require("./config/db");
 const passport = require("./config/passport");
 const authRoutes = require("./routes/auth");
+const pageRoutes = require("./routes/pages");
+const memberRoutes = require("./routes/members");
 const { ensureMember } = require("./middleware/ensureMember");
 
 const PORT = process.env.PORT || 4000;
@@ -50,6 +52,9 @@ async function main() {
   app.get("/api/me/profile", ensureMember, (req, res) => {
     res.json({ member: req.user });
   });
+
+  app.use("/api", pageRoutes);
+  app.use("/api", memberRoutes);
 
   // In production the built React app is served from this same origin, so the
   // session cookie is first-party on every request. (Split domains would need

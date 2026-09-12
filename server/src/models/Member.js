@@ -13,6 +13,8 @@ const memberSchema = new mongoose.Schema(
       lowercase: true,
     },
     active: { type: Boolean, default: true },
+    // Admins review the pending-edit queue and can revert published revisions.
+    role: { type: String, enum: ["member", "admin"], default: "member" },
   },
   { timestamps: true }
 );

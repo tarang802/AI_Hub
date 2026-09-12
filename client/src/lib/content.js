@@ -108,13 +108,23 @@ const registry = {};
 for (const [key, raw] of Object.entries(files)) {
   const rawPath = fileKeyToRawPath(key);
   const route = rawPathToRoute(rawPath);
-  let body = stripLeadingH1(raw.replace(/\r\n/g, "\n"));
-  body = preprocessAdmonitions(body);
-  body = rewriteLinks(body, dirOfRawPath(rawPath));
-  registry[route] = body;
+  registry[route] = stripLeadingH1(raw.replace(/\r\n/g, "\n"));
 }
 
-export function getPageBody(route) {
+// The bundled markdown is now only a fallback for local work before the
+// database has been seeded — live content comes from the API.
+export function getBundledBody(route) {
   const clean = route.replace(/^\/+|\/+$/g, "");
   return registry[clean] ?? null;
+}
+
+// Turns stored markdown into what react-markdown should render. Applied at
+// display time (not on save), so the editor always shows the raw source a
+// contributor wrote — relative `.md` links and `!!!` admonitions included.
+//
+// `linkBase` is the directory relative links resolve against; the server
+// stores it per page because it can't be inferred from the slug.
+export function renderBody(body, linkBase = "") {
+  const out = preprocessAdmonitions((body || "").replace(/\r\n/g, "\n"));
+  return rewriteLinks(out, linkBase);
 }
