@@ -8,30 +8,40 @@ This hub is built and maintained by the department community — students and fa
 - **Fix an error** — typos, broken links, outdated information, or anything technically wrong.
 - **Improve an existing page** — clearer explanations, better examples, more accurate project descriptions.
 - **Write a new page or project brief** — expanding a section that's thin, or adding a project idea to [Project Ideas](projects/index.md).
-- **Improve the site itself** — MkDocs configuration, navigation, styling, or the CI workflow.
+- **Improve the site itself** — styling, navigation, or the app's code, via a pull request.
 
-Small contributions (a resource link, a typo fix) are just as welcome as large ones — don't feel like a pull request needs to be a full new page to be worth submitting.
+Small contributions (a resource link, a typo fix) are just as welcome as large ones.
 
-## Setup
+## How to edit a page
+
+You don't need git, a terminal, or a GitHub account. Every member can edit directly:
+
+1. Open the page you want to change.
+2. Click **Edit** at the top right of the page.
+3. Make your change in Markdown. Use the **Preview** tab to check how it will render.
+4. Add a short note describing what you changed — it shows up in the page history.
+5. Click **Save changes**.
+
+Your edit goes live immediately. Every save is recorded with your name, so a lead can see exactly what changed and restore an earlier version if something goes wrong. Don't be afraid of breaking things — nothing is unrecoverable.
+
+## Changing the app itself
+
+Page *content* lives in the database and is edited on the site. The repository holds the application code — the React front end, the Express API, and the initial content seed.
 
 ```bash
-git clone https://github.com/Anasarfeen123/AI_Hub.git
+git clone https://github.com/tarang802/AI_Hub.git
 cd AI_Hub
-pip install -r requirements.txt
-mkdocs serve
+npm install --prefix server && npm install --prefix client
 ```
 
-Visit `http://127.0.0.1:8000` — the site live-reloads as you edit files under `docs/`.
+Run the API and the app in two terminals:
 
-## Workflow
+```bash
+cd server && npm run dev     # API on :4000
+cd client && npm run dev     # app on :5173
+```
 
-1. Fork the repository (or create a branch if you have write access).
-2. Make your change under `docs/`.
-3. If you're adding a new page, add it to the `nav:` section of `mkdocs.yml` so it actually appears in the sidebar.
-4. Run `mkdocs build --strict` locally — this is what CI runs, and it will fail on broken internal links or invalid config, so catching it locally saves a review cycle.
-5. Open a pull request with a clear description of what changed and why.
-
-CI builds and deploys the site automatically on merge to `main` — there's no manual publishing step.
+Then open a pull request describing what changed and why.
 
 ## Page structure conventions
 
@@ -76,7 +86,7 @@ Section **index pages** (e.g. `machine-learning/index.md`) are shorter — a par
 
 For a single link (a course, paper, tool, etc.), the fastest path is:
 
-1. Add it to the relevant category in [`docs/resources/index.md`](resources/index.md), or to a specific topic page's "Learning resources" list if it's narrowly relevant to one topic.
+1. Add it to the relevant category in [Resources](resources/index.md), or to a specific topic page's "Learning resources" list if it's narrowly relevant to one topic.
 2. Add one line of context — why it's worth including, not just a bare link.
 3. Open a pull request titled something like `Add resource: <name>`.
 
@@ -87,6 +97,5 @@ Contributions are reviewed for:
 - **Accuracy** — is the technical content correct?
 - **Fit** — does it belong in this hub, and in the section it's placed in?
 - **Structure** — does a new topic page follow the conventions above?
-- **Build health** — does `mkdocs build --strict` pass? (CI checks this automatically.)
 
 Reviewers should be constructive and specific — this is a teaching resource built by students at different stages, and review comments are themselves a form of teaching.

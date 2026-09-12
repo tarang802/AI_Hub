@@ -1,6 +1,5 @@
-// Mirrors the `nav:` tree in mkdocs.yml — titles + ordering for the top nav
-// and each section's sidebar. Paths match the roadmap's node hrefs and the
-// content files' locations under src/content/.
+// Titles + ordering for the top nav and each section's sidebar. Paths match
+// the roadmap's node hrefs and the content files' locations under src/content/.
 export const nav = [
   { title: "Roadmap", path: "roadmap" },
   {
