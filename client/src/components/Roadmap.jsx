@@ -1,11 +1,14 @@
 import { useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import roadmapData from "../assets/roadmap.json";
 
 const STORAGE_KEY = "aihub-roadmap-progress";
 
-// Content pages live in the members' Wiki (see wiki/README.md) — set
-// VITE_WIKI_URL once that's deployed so roadmap nodes link straight there.
-const WIKI_URL = import.meta.env.VITE_WIKI_URL || "";
+// roadmap.json hrefs look like "foundations/python/" — strip the trailing
+// slash and add a leading one to match this app's own content routes.
+function toRoute(href) {
+  return "/" + href.replace(/\/+$/, "");
+}
 
 function loadProgress() {
   try {
@@ -96,9 +99,9 @@ export default function Roadmap() {
                     const isDone = !!progress[node.id];
                     return (
                       <div key={node.id} className={`roadmap-node${isDone ? " is-done" : ""}`}>
-                        <a href={WIKI_URL ? `${WIKI_URL}/${node.href}` : node.href} className="roadmap-node-title">
+                        <Link to={toRoute(node.href)} className="roadmap-node-title">
                           {node.title}
-                        </a>
+                        </Link>
                         <p className="roadmap-node-desc">{node.desc}</p>
                         <label className="roadmap-node-check">
                           <input

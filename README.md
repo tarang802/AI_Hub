@@ -2,7 +2,7 @@
 
 # AI/ML Resource Hub
 
-**Microsoft Innovation Club (MIC), VIT Chennai**
+**Microsoft Innovations Club (MIC), VIT Chennai**
 
 A community-maintained knowledge base for MIC's AI/ML learning track — a single place to learn Artificial Intelligence from beginner foundations through to advanced research, and to find curated, vetted resources instead of scattered links.
 

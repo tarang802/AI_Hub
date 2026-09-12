@@ -9,8 +9,5 @@ venv/
 .idea/
 .vscode/
 
-# Wiki.js deployment secrets — never commit real credentials
-wiki/.env
-wiki/members.csv
-wiki/members-provisioned.csv
-
+# Node
+node_modules/

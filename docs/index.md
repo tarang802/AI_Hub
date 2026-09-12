@@ -10,7 +10,7 @@ hide:
 
 ![MIC logo](assets/images/mic-logo.png){ width="88" }
 
-<span class="hub-eyebrow">Microsoft Innovation Club — VIT Chennai</span>
+<span class="hub-eyebrow">Microsoft Innovations Club — VIT Chennai</span>
 
 # AI/ML Resource Hub
 

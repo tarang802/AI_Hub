@@ -1,5 +1,7 @@
 require("dotenv").config();
 
+const fs = require("fs");
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const session = require("express-session");
@@ -48,6 +50,18 @@ async function main() {
   app.get("/api/me/profile", ensureMember, (req, res) => {
     res.json({ member: req.user });
   });
+
+  // In production the built React app is served from this same origin, so the
+  // session cookie is first-party on every request. (Split domains would need
+  // sameSite:"none", which browsers only honour over HTTPS.) Locally this is
+  // skipped — Vite serves the client on its own port instead.
+  const clientDist = path.join(__dirname, "../../client/dist");
+  if (fs.existsSync(path.join(clientDist, "index.html"))) {
+    app.use(express.static(clientDist));
+    app.get("*", (_req, res) => {
+      res.sendFile(path.join(clientDist, "index.html"));
+    });
+  }
 
   app.listen(PORT, () => {
     console.log(`AI Hub auth server listening on http://localhost:${PORT}`);
