@@ -8,10 +8,10 @@ export default function Header() {
   return (
     <header className="hub-header">
       <div className="hub-header-inner">
-        <div className="hub-brand">
-          <img src={micLogo} alt="MIC logo" />
+        <Link className="hub-brand" to="/" aria-label="AI/ML Resource Hub — home">
+          <img src={micLogo} alt="" />
           <span>AI/ML Resource Hub</span>
-        </div>
+        </Link>
         {user && (
           <div className="hub-header-user">
             {user.role === "admin" && (

@@ -88,6 +88,14 @@ a:hover {
   gap: 0.6rem;
   font-weight: 700;
   min-width: 0;
+  color: var(--fg);
+  text-decoration: none;
+  transition: opacity var(--transition-fast);
+}
+
+.hub-brand:hover {
+  color: var(--fg);
+  opacity: 0.75;
 }
 
 .hub-brand img {
