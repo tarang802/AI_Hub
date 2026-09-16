@@ -97,7 +97,7 @@
 
 .role-badge--superadmin {
   border-color: var(--mic-orange);
-  color: var(--mic-orange);
+  color: var(--accent-text);
 }
 
 /* --------------------------------------------------------------------------
@@ -176,7 +176,7 @@
 }
 
 /* The top three carry the brand colours rather than medal clip-art. */
-.lb-row--1 .lb-rank { color: var(--mic-orange); }
+.lb-row--1 .lb-rank { color: var(--accent-text); }
 .lb-row--2 .lb-rank { color: var(--fg); }
 .lb-row--3 .lb-rank { color: var(--mic-yellow); }
 
@@ -260,5 +260,47 @@
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Admin bar — a single way in to member management, above the nav
+   -------------------------------------------------------------------------- */
+.adminbar {
+  display: flex;
+  justify-content: flex-end;
+  max-width: 62rem;
+  margin: 0 auto;
+  padding: 0.6rem 1.5rem 0;
+}
+
+.adminbar-btn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0 0.9rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--fg);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.adminbar-btn:hover {
+  border-color: var(--mic-orange);
+  color: var(--accent-text);
+}
+
+@media (max-width: 720px) {
+  .adminbar {
+    padding: 0.5rem 1rem 0;
+  }
+
+  .adminbar-btn {
+    min-height: 2.4rem;
   }
 }

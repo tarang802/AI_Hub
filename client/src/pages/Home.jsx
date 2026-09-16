@@ -1,16 +1,15 @@
 import Header from "../components/Header";
 import TopNav from "../components/TopNav";
 import Roadmap from "../components/Roadmap";
-import AdminDashboard from "../components/AdminDashboard";
+import AdminBar from "../components/AdminBar";
 import micLogo from "../assets/mic-logo.png";
 
 export default function Home() {
   return (
     <>
       <Header />
+      <AdminBar />
       <TopNav />
-      <AdminDashboard />
-
       <div className="hub-hero">
         <img src={micLogo} alt="MIC logo" width="88" />
         <span className="hub-eyebrow">Microsoft Innovations Club — VIT Chennai</span>
