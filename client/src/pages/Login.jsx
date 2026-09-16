@@ -64,7 +64,7 @@ const SOCIALS = [
   },
 ];
 
-function GoogleButton({ children = "Sign in with Google" }) {
+function GoogleButton() {
   return (
     <a className="google-signin-btn" href={googleLoginUrl()}>
       <svg viewBox="0 0 48 48" width="18" height="18" aria-hidden="true">
@@ -73,7 +73,7 @@ function GoogleButton({ children = "Sign in with Google" }) {
         <path fill="#4CAF50" d="M24 45c5.6 0 10.7-1.9 14.6-5.2l-6.7-5.7c-2 1.4-4.7 2.4-7.9 2.4-5.2 0-9.6-3.3-11.3-7.9l-6.6 5.1C9.9 40.9 16.4 45 24 45z" />
         <path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.2 4.2-4.1 5.6l6.7 5.7C41.7 36 45 30.7 45 24c0-1.4-.1-2.7-.4-3.5z" />
       </svg>
-      {children}
+      Sign in with Google
     </a>
   );
 }
@@ -94,7 +94,12 @@ export default function Login() {
           <img src={micLogo} alt="" width="26" />
           <span>Microsoft Innovations Club</span>
         </div>
-        <ThemeToggle />
+        <div className="lp-topbar-actions">
+          <ThemeToggle />
+          <a className="lp-topbar-signin" href={googleLoginUrl()}>
+            Sign in
+          </a>
+        </div>
       </header>
 
       <main className="lp-main">
@@ -154,12 +159,6 @@ export default function Login() {
           </div>
         </section>
 
-        {/* --- Closing sign-in --------------------------------------------- */}
-        <section className="lp-close">
-          <h2>Ready when you are.</h2>
-          <p>Sign in with the Google account on your MIC membership.</p>
-          <GoogleButton>Continue with Google</GoogleButton>
-        </section>
       </main>
 
       <footer className="lp-footer">
