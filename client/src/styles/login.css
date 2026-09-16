@@ -60,6 +60,34 @@
   color: var(--fg);
 }
 
+.lp-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* A quieter second entry point than the hero button — someone returning to the
+   hub shouldn't have to read the page again to find the way in. */
+.lp-topbar-signin {
+  display: inline-flex;
+  align-items: center;
+  height: 2rem;
+  padding: 0 0.85rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--fg);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+}
+
+.lp-topbar-signin:hover {
+  border-color: var(--mic-orange);
+  color: var(--accent-text);
+}
+
 .lp-topbar-brand img {
   height: 22px;
   width: auto;
@@ -103,7 +131,7 @@
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--mic-orange);
+  color: var(--accent-text);
 }
 
 .lp-hero h1 {
@@ -173,7 +201,7 @@
   justify-content: center;
   border-radius: var(--radius-full);
   border: 1px solid var(--mic-orange);
-  color: var(--mic-orange);
+  color: var(--accent-text);
   font-size: 0.72rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
@@ -275,7 +303,7 @@
 }
 
 .lp-footer-socials a:hover {
-  color: var(--mic-orange);
+  color: var(--accent-text);
 }
 
 .lp-footer-note {

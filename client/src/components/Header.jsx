@@ -35,7 +35,9 @@ export default function Header() {
               My edits
             </Link>
             <span className="hub-header-name">
-              {user.name}
+              {/* The name truncates on its own; text-overflow can't ellipsis a
+                  container that also holds the badge. */}
+              <span className="hub-header-name-text">{user.name}</span>
               <RoleBadge role={user.role} />
             </span>
             <ThemeToggle />

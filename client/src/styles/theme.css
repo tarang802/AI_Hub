@@ -19,7 +19,7 @@
   --fg: #eef0f3;
   --fg-strong: #ffffff;
   --fg-light: #a7adb8;
-  --fg-lighter: #6b7280;
+  --fg-lighter: #7c8492;
 
   --border: rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.12);
@@ -30,6 +30,11 @@
 
   --link: #5ea1e6;
   --danger: #ff6b6b;
+
+  /* The brand orange at 2.94:1 on white is unreadable as text. It stays the
+     fill and border colour in both themes; this is the version used for words,
+     darkened in the light theme until it passes AA. */
+  --accent-text: #f2711c;
 
   /* Ink for text sitting ON a brand colour. Dark in both themes, because the
      brand colours themselves do not change. */
@@ -74,7 +79,7 @@
   --fg: #14171c;
   --fg-strong: #000000;
   --fg-light: #515966;
-  --fg-lighter: #6e7683;
+  --fg-lighter: #636b78;
 
   --border: rgba(11, 13, 16, 0.14);
   --border-strong: rgba(11, 13, 16, 0.22);
@@ -85,12 +90,13 @@
 
   --link: #12539e;
   --danger: #c62828;
+  --accent-text: #ab450b;
 
-  --level-beginner: #1b7f35;
+  --level-beginner: #16682a;
   --level-intermediate: #8a5d00;
-  --level-advanced: #b8480a;
-  --level-beginner-soft: #12602a;
-  --level-advanced-soft: #97390a;
+  --level-advanced: #9c3b07;
+  --level-beginner-soft: #10551f;
+  --level-advanced-soft: #863206;
 
   color-scheme: light;
 }
@@ -118,7 +124,7 @@ a {
 }
 
 a:hover {
-  color: var(--mic-orange);
+  color: var(--accent-text);
 }
 
 .hub-loading {
@@ -189,6 +195,13 @@ a:hover {
 }
 
 .hub-header-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.hub-header-name-text {
   max-width: 9rem;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -220,7 +233,7 @@ a:hover {
 
 .hub-header-signout:hover {
   border-color: var(--mic-orange);
-  color: var(--mic-orange);
+  color: var(--accent-text);
 }
 
 /* --------------------------------------------------------------------------
@@ -392,7 +405,7 @@ a:hover {
 
 .roadmap-reset:hover {
   border-color: var(--mic-orange);
-  color: var(--mic-orange);
+  color: var(--accent-text);
 }
 
 .roadmap-flow {
@@ -720,7 +733,7 @@ a:hover {
 }
 
 .hub-topnav-inner a.active {
-  color: var(--mic-orange);
+  color: var(--accent-text);
   border-bottom-color: var(--mic-orange);
 }
 
@@ -769,7 +782,7 @@ a:hover {
 }
 
 .section-sidebar a.active {
-  color: var(--mic-orange);
+  color: var(--accent-text);
   background: rgba(242, 113, 28, 0.1);
 }
 
@@ -963,7 +976,7 @@ a:hover {
 }
 
 .hub-header-link:hover {
-  color: var(--mic-orange);
+  color: var(--accent-text);
 }
 
 .md-status {
@@ -999,7 +1012,7 @@ a:hover {
 
 .md-edit-btn:hover {
   border-color: var(--mic-orange);
-  color: var(--mic-orange);
+  color: var(--accent-text);
 }
 
 /* --- Editor ------------------------------------------------------------- */
@@ -1058,7 +1071,7 @@ a:hover {
 
 .editor-tabs button.active {
   border-color: var(--mic-orange);
-  color: var(--mic-orange);
+  color: var(--accent-text);
 }
 
 .editor-textarea {
@@ -1159,7 +1172,7 @@ a:hover {
 
 .editor-cancel:hover {
   border-color: var(--mic-orange);
-  color: var(--mic-orange) !important;
+  color: var(--accent-text) !important;
 }
 
 .editor-done {
@@ -1677,7 +1690,7 @@ a:hover {
 .admin-nav a:hover { color: var(--fg); }
 
 .admin-nav a.active {
-  color: var(--mic-orange);
+  color: var(--accent-text);
   border-bottom-color: var(--mic-orange);
 }
 
@@ -1978,7 +1991,7 @@ a:hover {
   cursor: pointer;
 }
 
-.iconbtn:hover:not(:disabled) { border-color: var(--mic-orange); color: var(--mic-orange); }
+.iconbtn:hover:not(:disabled) { border-color: var(--mic-orange); color: var(--accent-text); }
 .iconbtn:disabled { opacity: 0.25; cursor: not-allowed; }
 .iconbtn--danger:hover:not(:disabled) { border-color: var(--danger); color: var(--danger); }
 
@@ -2000,7 +2013,7 @@ a:hover {
   cursor: pointer;
 }
 
-.editor-linkpicker:hover { border-color: var(--mic-orange); color: var(--mic-orange); }
+.editor-linkpicker:hover { border-color: var(--mic-orange); color: var(--accent-text); }
 .editor-linkpicker:focus { outline: none; border-color: var(--mic-orange); }
 
 /* Fade edges hint that the nav continues past the visible area. They're
@@ -2053,7 +2066,7 @@ a:hover {
 
 .hub-topnav-arrow:hover {
   border-color: var(--mic-orange);
-  color: var(--mic-orange);
+  color: var(--accent-text);
 }
 
 .hub-topnav-arrow--left { left: 0.15rem; }

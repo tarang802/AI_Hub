@@ -85,7 +85,9 @@ export default function Roadmap() {
           return (
             <div key={stage.id} style={{ display: "contents" }}>
               <div className={`roadmap-stage roadmap-stage--${stage.levelClass}`}>
-                <span className="roadmap-stage-num">{stage.num}</span>
+                {/* A watermark numeral, deliberately near-invisible. The stage is already
+                    named by the badge beside it, so this is decoration only. */}
+                <span className="roadmap-stage-num" aria-hidden="true">{stage.num}</span>
                 <div className="roadmap-stage-head">
                   <span className={`hub-level-badge ${stage.levelClass}`}>{stage.label}</span>
                   <span className="roadmap-duration">{stage.duration}</span>
