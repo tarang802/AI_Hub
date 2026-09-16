@@ -173,9 +173,14 @@
   }
 }
 
-/* Nothing should ever force a sideways scroll of the document itself. */
-html,
-body {
+/* Nothing should force a sideways scroll of the document itself.
+   This deliberately avoids `overflow-x: hidden` on html/body: with the
+   `height: 100%` those elements already carry, hiding one axis computes the
+   other to `auto`, which makes BODY the scroll container instead of the
+   document. window.scrollY then reads 0 forever and scroll restoration breaks.
+   `clip` is the one value that constrains an axis without creating a scroll
+   container, so the document keeps scrolling normally. */
+#root {
   max-width: 100%;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
