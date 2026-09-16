@@ -1,7 +1,8 @@
 const express = require("express");
 const Revision = require("../models/Revision");
 const Member = require("../models/Member");
-const { ensureMember } = require("../middleware/ensureMember");
+const Page = require("../models/Page");
+const { ensureMember, ensureAdmin } = require("../middleware/ensureMember");
 
 const router = express.Router();
 router.use(ensureMember);
@@ -133,6 +134,37 @@ router.get("/stats/me", async (req, res, next) => {
         edits: r.edits,
         lastEdit: r.lastEdit,
       })),
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// The numbers behind the dashboard panel admins and leads see on the home
+// page. One request rather than four, since it all renders together.
+router.get("/admin/summary", ensureAdmin, async (req, res, next) => {
+  try {
+    const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+
+    const [pages, hidden, members, active, admins, leads, recentEdits, contributors, latest] =
+      await Promise.all([
+        Page.countDocuments(),
+        Page.countDocuments({ hidden: true }),
+        Member.countDocuments(),
+        Member.countDocuments({ active: true }),
+        Member.countDocuments({ role: "admin", active: true }),
+        Member.countDocuments({ role: "superadmin", active: true }),
+        Revision.countDocuments({ ...REAL_EDITS, createdAt: { $gte: weekAgo } }),
+        Revision.distinct("authorEmail", REAL_EDITS),
+        Revision.find(REAL_EDITS).sort({ createdAt: -1 }).limit(5).select("slug authorName authorEmail wordsAdded createdAt note"),
+      ]);
+
+    res.json({
+      viewerRole: req.user.role,
+      pages: { total: pages, hidden },
+      members: { total: members, active, admins, leads },
+      activity: { editsThisWeek: recentEdits, contributors: contributors.length },
+      latest,
     });
   } catch (err) {
     next(err);

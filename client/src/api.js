@@ -126,6 +126,11 @@ export function deletePage(id, force = false) {
 
 // --- Contributions -------------------------------------------------------
 
+// Everything the home-page dashboard panel needs, in one request.
+export async function fetchAdminSummary() {
+  return request("/api/admin/summary");
+}
+
 export async function fetchLeaderboard() {
   return request("/api/leaderboard");
 }

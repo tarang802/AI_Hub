@@ -1,0 +1,210 @@
+/* ==========================================================================
+   Home-page dashboard (admins and leads only)
+   Sits above the hero because staff open the hub to work, not to read.
+   ========================================================================== */
+
+.dash {
+  max-width: 62rem;
+  margin: 1.75rem auto 0;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.dash-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.dash-head h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--fg);
+}
+
+.dash-role {
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--mic-orange);
+}
+
+/* --- Numbers -------------------------------------------------------------- */
+.dash-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: 1px;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.dash-stats > div {
+  background: var(--surface-raised);
+  padding: 0.9rem 1rem;
+}
+
+.dash-stats dt {
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--fg-lighter);
+  margin-bottom: 0.35rem;
+}
+
+.dash-stats dd {
+  margin: 0;
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+
+/* The qualifier sits under the number rather than beside it, so the figures
+   still line up across the row. */
+.dash-stats dd small {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--fg-lighter);
+  letter-spacing: 0;
+}
+
+/* --- Ways in -------------------------------------------------------------- */
+.dash-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.dash-actions a {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.8rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-raised);
+  text-decoration: none;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.dash-actions a:hover {
+  border-color: var(--mic-orange);
+  background: var(--tint-1);
+}
+
+.dash-actions strong {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--fg);
+}
+
+.dash-actions span {
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: var(--fg-light);
+}
+
+/* --- Latest edits --------------------------------------------------------- */
+.dash-recent h3 {
+  margin: 0 0 0.6rem;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--fg-lighter);
+}
+
+.dash-recent ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.dash-recent li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--border);
+  font-size: 0.83rem;
+}
+
+.dash-recent li a {
+  font-weight: 600;
+  color: var(--fg);
+  text-decoration: none;
+  flex: none;
+  max-width: 40%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dash-recent li a:hover {
+  color: var(--mic-orange);
+}
+
+.dash-recent-who {
+  flex: 1;
+  min-width: 0;
+  color: var(--fg-light);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dash-recent time {
+  flex: none;
+  color: var(--fg-lighter);
+  font-size: 0.76rem;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 720px) {
+  .dash {
+    margin: 1rem 1rem 0;
+    padding: 1.15rem;
+    border-radius: var(--radius-md);
+  }
+
+  .dash-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dash-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* On a phone the page name and the author fight for the same line, so the
+     author drops out — the timestamp is the more useful of the two here. */
+  .dash-recent-who {
+    display: none;
+  }
+
+  .dash-recent li a {
+    max-width: none;
+    flex: 1;
+  }
+}
+
+@media (max-width: 420px) {
+  .dash-actions {
+    grid-template-columns: 1fr;
+  }
+}
