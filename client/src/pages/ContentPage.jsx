@@ -4,6 +4,7 @@ import Markdown from "../components/Markdown";
 import Header from "../components/Header";
 import TopNav from "../components/TopNav";
 import SectionSidebar from "../components/SectionSidebar";
+import PageByline from "../components/PageByline";
 import RoadmapTree from "../components/RoadmapTree";
 import { useNav, findInNav } from "../context/NavContext";
 import { fetchPage } from "../api";
@@ -71,6 +72,8 @@ export default function ContentPage() {
                   Edit
                 </Link>
               </div>
+              <PageByline page={page} />
+
               {/* The roadmap page leads with the interactive tree; the
                   written version below it stays editable like any other page. */}
               {slug === "roadmap" && <RoadmapTree />}

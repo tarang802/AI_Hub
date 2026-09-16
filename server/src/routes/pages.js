@@ -1,6 +1,7 @@
 const express = require("express");
 const Page = require("../models/Page");
 const Revision = require("../models/Revision");
+const Member = require("../models/Member");
 const { computeStats } = require("../lib/diffStats");
 const { ensureMember, ensureAdmin } = require("../middleware/ensureMember");
 
@@ -24,6 +25,19 @@ router.get("/page", async (req, res, next) => {
     const page = await Page.findOne({ slug: req.query.slug });
     if (!page) return res.status(404).json({ error: "Page not found." });
 
+    // The byline shows a person, not an address. The name is looked up rather
+    // than stored on the page so it follows a member's current name, and it
+    // falls back to the email if they have since left the club.
+    let editorName = null;
+    let editorRole = null;
+    if (page.updatedBy) {
+      const editor = await Member.findOne({ collegeEmail: page.updatedBy.toLowerCase() }).select("name role");
+      if (editor) {
+        editorName = editor.name;
+        editorRole = editor.role;
+      }
+    }
+
     res.json({
       page: {
         slug: page.slug,
@@ -32,6 +46,8 @@ router.get("/page", async (req, res, next) => {
         linkBase: page.linkBase,
         updatedAt: page.updatedAt,
         updatedBy: page.updatedBy,
+        editorName,
+        editorRole,
       },
     });
   } catch (err) {
