@@ -1,5 +1,6 @@
 const express = require("express");
 const Member = require("../models/Member");
+const { ROLES, outranks, rankOf } = require("../models/Member");
 const { ensureAdmin } = require("../middleware/ensureMember");
 
 const router = express.Router();
@@ -13,8 +14,8 @@ router.get("/", async (req, res, next) => {
     const members = await Member.find()
       .sort({ name: 1 })
       .limit(2000)
-      .select("name collegeEmail active role createdAt");
-    res.json({ members });
+      .select("name collegeEmail active role department createdAt");
+    res.json({ members, viewerRole: req.user.role });
   } catch (err) {
     next(err);
   }
@@ -24,6 +25,7 @@ router.post("/", async (req, res, next) => {
   try {
     const name = (req.body.name || "").trim();
     const email = (req.body.email || "").trim().toLowerCase();
+    const department = (req.body.department || "").trim();
 
     if (!name || !email) return res.status(400).json({ error: "Name and email are both required." });
     if (!/^\S+@\S+\.\S+$/.test(email)) return res.status(400).json({ error: "That doesn't look like an email address." });
@@ -31,7 +33,7 @@ router.post("/", async (req, res, next) => {
     const existing = await Member.findOne({ collegeEmail: email });
     if (existing) return res.status(409).json({ error: `${email} is already on the list.` });
 
-    const member = await Member.create({ name, collegeEmail: email });
+    const member = await Member.create({ name, collegeEmail: email, department });
     res.status(201).json({ member });
   } catch (err) {
     next(err);
@@ -39,11 +41,12 @@ router.post("/", async (req, res, next) => {
 });
 
 // Paste-in bulk add, so onboarding a whole recruitment intake doesn't mean
-// typing 250 rows one at a time. Accepts "Name,email" per line, with or
-// without a header row.
+// typing 250 rows one at a time. Accepts "Name,email" per line — and
+// optionally a third "department" column — with or without a header row.
 router.post("/bulk", async (req, res, next) => {
   try {
     const text = typeof req.body.text === "string" ? req.body.text : "";
+    const fallbackDept = (req.body.department || "").trim();
     const lines = text.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
 
     const added = [];
@@ -58,6 +61,7 @@ router.post("/bulk", async (req, res, next) => {
       }
       const name = parts[0].trim();
       const email = parts[1].trim().toLowerCase();
+      const department = (parts[2] || "").trim() || fallbackDept;
 
       // Tolerate a header row without reporting it as an error.
       if (name.toLowerCase() === "name" && email === "email") continue;
@@ -73,7 +77,7 @@ router.post("/bulk", async (req, res, next) => {
         continue;
       }
 
-      await Member.create({ name, collegeEmail: email });
+      await Member.create({ name, collegeEmail: email, department });
       added.push(email);
     }
 
@@ -88,26 +92,65 @@ router.patch("/:id", async (req, res, next) => {
     const member = await Member.findById(req.params.id);
     if (!member) return res.status(404).json({ error: "Member not found." });
 
-    // Guard against an admin locking themselves — and potentially everyone —
-    // out of the review tools.
+    const actorRole = req.user.role;
     const isSelf = member.collegeEmail === req.user.email;
-    if (isSelf && (req.body.role === "member" || req.body.active === false)) {
+    const wantsRole = ROLES.includes(req.body.role) ? req.body.role : null;
+    const wantsActive = typeof req.body.active === "boolean" ? req.body.active : null;
+
+    // Guard against an admin locking themselves out of the tools they run.
+    if (isSelf && (wantsRole === "member" || wantsActive === false)) {
       return res.status(400).json({
-        error: "You can't demote or deactivate your own account. Ask another admin to do it.",
+        error: "You can't demote or deactivate your own account. Ask another lead to do it.",
       });
     }
 
-    if (req.body.role === "admin" || req.body.role === "member") {
-      if (req.body.role === "member") {
-        const admins = await Member.countDocuments({ role: "admin", active: true });
-        if (admins <= 1 && member.role === "admin") {
-          return res.status(400).json({ error: "That's the last admin — promote someone else first." });
-        }
-      }
-      member.role = req.body.role;
+    // The heart of the superadmin tier: you may only act on someone you
+    // outrank. Equal ranks fail too, so one admin cannot demote another and
+    // no admin can touch a lead.
+    if (!isSelf && !outranks(actorRole, member.role)) {
+      return res.status(403).json({
+        error:
+          member.role === "superadmin"
+            ? "Only a lead can change another lead's account."
+            : "You can only manage accounts below your own role.",
+      });
     }
 
-    if (typeof req.body.active === "boolean") member.active = req.body.active;
+    if (wantsRole) {
+      // Handing out power is lead-only. A lead may appoint another lead — each
+      // tenure brings in a new board — but an admin can create neither an admin
+      // (a peer they then couldn't manage) nor a lead (their own superior).
+      if (rankOf(wantsRole) >= rankOf("admin") && actorRole !== "superadmin") {
+        return res.status(403).json({
+          error: "Only a lead can grant the admin or lead role.",
+        });
+      }
+
+      // Never let the last lead disappear; the club would lose the only
+      // account that can appoint admins.
+      if (member.role === "superadmin" && wantsRole !== "superadmin") {
+        const leads = await Member.countDocuments({ role: "superadmin", active: true });
+        if (leads <= 1) {
+          return res.status(400).json({ error: "That's the last lead — promote someone else first." });
+        }
+      }
+
+      member.role = wantsRole;
+    }
+
+    if (wantsActive !== null) {
+      if (member.role === "superadmin" && wantsActive === false) {
+        const leads = await Member.countDocuments({ role: "superadmin", active: true });
+        if (leads <= 1) {
+          return res.status(400).json({ error: "That's the last lead — promote someone else first." });
+        }
+      }
+      member.active = wantsActive;
+    }
+
+    if (typeof req.body.department === "string") {
+      member.department = req.body.department.trim();
+    }
 
     await member.save();
     res.json({ member });
