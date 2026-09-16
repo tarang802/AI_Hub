@@ -1,6 +1,7 @@
 const express = require("express");
 const Page = require("../models/Page");
 const Revision = require("../models/Revision");
+const { computeStats } = require("../lib/diffStats");
 const { ensureMember, ensureAdmin } = require("../middleware/ensureMember");
 
 const router = express.Router();
@@ -22,6 +23,7 @@ router.get("/page", async (req, res, next) => {
 
     const page = await Page.findOne({ slug: req.query.slug });
     if (!page) return res.status(404).json({ error: "Page not found." });
+
     res.json({
       page: {
         slug: page.slug,
@@ -54,6 +56,9 @@ router.post("/edits", async (req, res, next) => {
       return res.status(400).json({ error: "No changes to save." });
     }
 
+    // Measure against what was live a moment ago, before the page is updated.
+    const stats = computeStats(page.body, body);
+
     page.body = body;
     page.updatedBy = req.user.email;
     await page.save();
@@ -65,6 +70,7 @@ router.post("/edits", async (req, res, next) => {
       authorName: req.user.name,
       publishedBy: req.user.email,
       note: (summary || "").slice(0, 300),
+      ...stats,
     });
 
     res.status(201).json({ revisionId: revision._id });
@@ -131,6 +137,11 @@ router.post("/revisions/:id/revert", ensureAdmin, async (req, res, next) => {
     const page = await Page.findOne({ slug: revision.slug });
     if (!page) return res.status(404).json({ error: "Page no longer exists." });
 
+    // A revert restores someone else's words, so the stats describe the change
+    // but attribution stays with the original author — reverting is not a way
+    // to farm the leaderboard.
+    const stats = computeStats(page.body, revision.body);
+
     page.body = revision.body;
     page.updatedBy = req.user.email;
     await page.save();
@@ -142,6 +153,7 @@ router.post("/revisions/:id/revert", ensureAdmin, async (req, res, next) => {
       authorName: revision.authorName,
       publishedBy: req.user.email,
       note: `Reverted to the version from ${new Date(revision.createdAt).toISOString().slice(0, 10)}`,
+      ...stats,
     });
 
     res.json({ ok: true });
