@@ -6,6 +6,7 @@ import { useAuth } from "../context/AuthContext";
 import { fetchChanges, fetchDiff, revertRevision } from "../api";
 import DiffView from "../components/DiffView";
 import AdminNav from "../components/AdminNav";
+import { isStaff } from "../lib/roles";
 
 function when(date) {
   return new Date(date).toLocaleString();
@@ -21,7 +22,7 @@ export default function ChangesPage({ mine = false }) {
   const [diff, setDiff] = useState(null);
   const [busyId, setBusyId] = useState(null);
 
-  const isAdmin = user?.role === "admin";
+  const isAdmin = isStaff(user?.role);
 
   async function load() {
     setError(null);

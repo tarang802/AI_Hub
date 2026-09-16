@@ -6,6 +6,7 @@ import AdminNav from "../components/AdminNav";
 import { useAuth } from "../context/AuthContext";
 import { useNav } from "../context/NavContext";
 import { fetchAllPages, fetchStages, createPage, updatePageMeta, deletePage } from "../api";
+import { isStaff } from "../lib/roles";
 
 export default function PagesAdmin() {
   const { user, loading: authLoading } = useAuth();
@@ -36,7 +37,7 @@ export default function PagesAdmin() {
   }
 
   useEffect(() => {
-    if (user?.role === "admin") load();
+    if (isStaff(user?.role)) load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
@@ -47,7 +48,7 @@ export default function PagesAdmin() {
 
   if (authLoading) return <div className="hub-loading">Loading…</div>;
   if (!user) return <Navigate to="/login" replace />;
-  if (user.role !== "admin") {
+  if (!isStaff(user.role)) {
     return (
       <>
         <Header />
