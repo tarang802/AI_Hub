@@ -13,6 +13,7 @@ const authRoutes = require("./routes/auth");
 const pageRoutes = require("./routes/pages");
 const memberRoutes = require("./routes/members");
 const structureRoutes = require("./routes/structure");
+const statsRoutes = require("./routes/stats");
 const { ensureMember } = require("./middleware/ensureMember");
 
 const PORT = process.env.PORT || 4000;
@@ -49,14 +50,10 @@ async function main() {
 
   app.get("/api/health", (_req, res) => res.json({ ok: true }));
 
-  // Example of a member-only API route — add real ones here as the app grows.
-  app.get("/api/me/profile", ensureMember, (req, res) => {
-    res.json({ member: req.user });
-  });
-
   app.use("/api", pageRoutes);
   app.use("/api/members", memberRoutes);
   app.use("/api", structureRoutes);
+  app.use("/api", statsRoutes);
 
   // An unmatched /api/* must not fall through to the SPA fallback below —
   // fetch() would then parse index.html as JSON and fail with a syntax error
