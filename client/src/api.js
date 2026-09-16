@@ -65,17 +65,25 @@ export function revertRevision(id) {
 
 // --- Members (admin) -----------------------------------------------------
 
+// Returns the viewer's own role alongside the list, so the UI knows which rows
+// it is allowed to offer controls for without hardcoding the hierarchy.
 export async function fetchMembers() {
   const data = await request("/api/members");
-  return data.members;
+  return { members: data.members, viewerRole: data.viewerRole };
 }
 
-export function addMember(name, email) {
-  return request("/api/members", { method: "POST", body: JSON.stringify({ name, email }) });
+export function addMember(name, email, department = "") {
+  return request("/api/members", {
+    method: "POST",
+    body: JSON.stringify({ name, email, department }),
+  });
 }
 
-export function bulkAddMembers(text) {
-  return request("/api/members/bulk", { method: "POST", body: JSON.stringify({ text }) });
+export function bulkAddMembers(text, department = "") {
+  return request("/api/members/bulk", {
+    method: "POST",
+    body: JSON.stringify({ text, department }),
+  });
 }
 
 export function updateMember(id, changes) {
@@ -114,4 +122,15 @@ export function updatePageMeta(id, changes) {
 
 export function deletePage(id, force = false) {
   return request(`/api/pages/${id}${force ? "?force=1" : ""}`, { method: "DELETE" });
+}
+
+// --- Contributions -------------------------------------------------------
+
+export async function fetchLeaderboard() {
+  return request("/api/leaderboard");
+}
+
+// Omit `email` for the signed-in member's own numbers.
+export async function fetchMyStats(email) {
+  return request(`/api/stats/me${email ? `?email=${encodeURIComponent(email)}` : ""}`);
 }
