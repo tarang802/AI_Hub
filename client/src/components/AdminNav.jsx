@@ -12,6 +12,9 @@ export default function AdminNav() {
       <NavLink to="/admin/members" className={({ isActive }) => (isActive ? "active" : "")}>
         Members
       </NavLink>
+      <NavLink to="/contributors" className={({ isActive }) => (isActive ? "active" : "")}>
+        Contributors
+      </NavLink>
     </nav>
   );
 }

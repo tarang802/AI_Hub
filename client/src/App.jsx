@@ -9,6 +9,7 @@ import EditPage from "./pages/EditPage";
 import ChangesPage from "./pages/ChangesPage";
 import MembersPage from "./pages/MembersPage";
 import PagesAdmin from "./pages/PagesAdmin";
+import LeaderboardPage from "./pages/LeaderboardPage";
 
 export default function App() {
   return (
@@ -46,6 +47,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <MembersPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/contributors"
+            element={
+              <ProtectedRoute>
+                <LeaderboardPage />
               </ProtectedRoute>
             }
           />

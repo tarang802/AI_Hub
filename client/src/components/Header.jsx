@@ -1,9 +1,13 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import ThemeToggle from "./ThemeToggle";
+import RoleBadge from "./RoleBadge";
 import micLogo from "../assets/mic-logo.png";
+import { isStaff } from "../lib/roles";
 
 export default function Header() {
   const { user, logout } = useAuth();
+  const isAdmin = isStaff(user?.role);
 
   return (
     <header className="hub-header">
@@ -14,7 +18,7 @@ export default function Header() {
         </Link>
         {user && (
           <div className="hub-header-user">
-            {user.role === "admin" && (
+            {isAdmin && (
               <>
                 <Link className="hub-header-link" to="/admin/pages">
                   Pages
@@ -24,15 +28,23 @@ export default function Header() {
                 </Link>
               </>
             )}
+            <Link className="hub-header-link" to="/contributors">
+              Contributors
+            </Link>
             <Link className="hub-header-link" to="/my-edits">
               My edits
             </Link>
-            <span className="hub-header-name">{user.name}</span>
+            <span className="hub-header-name">
+              {user.name}
+              <RoleBadge role={user.role} />
+            </span>
+            <ThemeToggle />
             <button className="hub-header-signout" onClick={logout}>
               Sign out
             </button>
           </div>
         )}
+        {!user && <ThemeToggle />}
       </div>
     </header>
   );
