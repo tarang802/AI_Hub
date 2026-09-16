@@ -13,8 +13,24 @@ const revisionSchema = new mongoose.Schema(
     authorName: { type: String, default: null },
     publishedBy: { type: String, default: null },
     note: { type: String, default: "" },
+
+    // How much this revision changed, measured against the one before it and
+    // stored at save time. Computing it here keeps the leaderboard a simple
+    // aggregation instead of a diff of every revision on every page load.
+    linesAdded: { type: Number, default: 0 },
+    linesRemoved: { type: Number, default: 0 },
+    wordsAdded: { type: Number, default: 0 },
+    wordsRemoved: { type: Number, default: 0 },
+    charsAdded: { type: Number, default: 0 },
+
+    // The initial import of the original markdown. Excluded from the
+    // leaderboard, since nobody typed it into the site.
+    seeded: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
+
+// The leaderboard groups by author and the changes feed sorts by recency.
+revisionSchema.index({ authorEmail: 1, createdAt: -1 });
 
 module.exports = mongoose.model("Revision", revisionSchema);
