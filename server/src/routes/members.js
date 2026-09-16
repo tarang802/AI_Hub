@@ -104,10 +104,15 @@ router.patch("/:id", async (req, res, next) => {
       });
     }
 
-    // The heart of the superadmin tier: you may only act on someone you
-    // outrank. Equal ranks fail too, so one admin cannot demote another and
-    // no admin can touch a lead.
-    if (!isSelf && !outranks(actorRole, member.role)) {
+    // You may act on someone you outrank — so one admin cannot demote another,
+    // and no admin can touch a lead.
+    //
+    // Leads are the exception: they may act on each other. Without that, making
+    // someone a lead would be irreversible from the app, and a board handover
+    // would need database access to undo. The last-lead guard below still
+    // stops the club from ending up with none.
+    const canAct = outranks(actorRole, member.role) || actorRole === "superadmin";
+    if (!isSelf && !canAct) {
       return res.status(403).json({
         error:
           member.role === "superadmin"
