@@ -26,6 +26,11 @@ const revisionSchema = new mongoose.Schema(
     // The initial import of the original markdown. Excluded from the
     // leaderboard, since nobody typed it into the site.
     seeded: { type: Boolean, default: false },
+
+    // Set by hand to keep a revision out of the leaderboard while leaving it in
+    // the page's history — test edits and setup work, which would otherwise sit
+    // above members who wrote real content.
+    excludeFromStats: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

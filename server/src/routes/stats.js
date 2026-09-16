@@ -6,10 +6,14 @@ const { ensureMember } = require("../middleware/ensureMember");
 const router = express.Router();
 router.use(ensureMember);
 
-// Seeded revisions are the original markdown import — nobody wrote those in
-// the hub, so counting them would hand the top of the board to whoever ran
-// the import script.
-const REAL_EDITS = { seeded: { $ne: true }, authorEmail: { $ne: null } };
+// What counts as a contribution. Two things are left out: the original
+// markdown import (nobody typed it into the hub), and anything flagged by hand
+// as setup or test work — see scripts/excludeFromStats.js.
+const REAL_EDITS = {
+  seeded: { $ne: true },
+  excludeFromStats: { $ne: true },
+  authorEmail: { $ne: null },
+};
 
 // The leaderboard ranks by words added, not by number of edits: the ask was to
 // reward people who actually write, not people who save often.
